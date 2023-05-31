@@ -1,13 +1,10 @@
-import express from "express";
-import cors from "cors";
+import app from "./app";
+import http from "http";
 import config from "../config";
+import logger from "./utils/logger";
 
-const app = express();
-app.use(express.json());
-app.use(cors());
+const server = http.createServer(app);
 
-const PORT = config.PORT;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`);
 });
