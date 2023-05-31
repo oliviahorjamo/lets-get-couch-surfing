@@ -29,6 +29,6 @@ switch (process.env.NODE_ENV) {
 dotenv.config({ path: path });
 
 export default {
-  PORT: process.env.PORT,
+  PORT: process.env.PORT || 3001,
   DB_URI: process.env.DB_URI,
 };
