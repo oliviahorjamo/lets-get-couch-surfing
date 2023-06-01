@@ -7,8 +7,8 @@ import publicationRouter from "./routes/publications";
 
 //const logger = require('./utils/logger')
 
-import connect from "./db";
-connect();
+import db from "./db";
+db.connect();
 
 const app = express();
 
