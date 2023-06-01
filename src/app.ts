@@ -7,6 +7,9 @@ import publicationRouter from "./routes/publications";
 
 //const logger = require('./utils/logger')
 
+import connect from "./db";
+connect();
+
 const app = express();
 
 // connect to mongoose here
