@@ -20,6 +20,11 @@ Friendship.init(
       allowNull: false,
       references: { model: "users", key: "id" },
     },
+    pending: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   },
   {
     sequelize,
