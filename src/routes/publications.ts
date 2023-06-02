@@ -1,5 +1,3 @@
-// here all code related to finding publications
-
 // later the userextractor stuff here
 
 import express from "express";

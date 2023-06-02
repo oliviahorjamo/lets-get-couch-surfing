@@ -1,6 +1,5 @@
 import app from "../src/app";
 import supertest from "supertest";
-//import "@types/jest";
 
 const api = supertest(app);
 

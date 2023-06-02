@@ -1,23 +1,16 @@
-//import config from "../config";
 import express from "express";
 import cors from "cors";
 import publicationRouter from "./routes/publications";
+import userRouter from "./routes/users";
 // import middleware here
-// import mongoose here
-
-//const logger = require('./utils/logger')
-
-import db from "./db";
-db.connect();
 
 const app = express();
-
-// connect to mongoose here
 
 app.use(cors());
 app.use(express.static("build"));
 app.use(express.json());
 
 app.use("/api/publications", publicationRouter);
+app.use("/api/users", userRouter);
 
 export default app;

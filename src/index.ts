@@ -2,9 +2,15 @@ import app from "./app";
 import http from "http";
 import config from "../config";
 import logger from "./utils/logger";
+const { connectToDatabase } = require("./db");
 
 const server = http.createServer(app);
 
-server.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`);
-});
+const start = async () => {
+  await connectToDatabase();
+  server.listen({ port: config.PORT, host: "0.0.0.0" }, () => {
+    logger.info(`Server running on port ${config.PORT}`);
+  });
+};
+
+start();

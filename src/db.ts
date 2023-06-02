@@ -4,11 +4,10 @@ import logger from "./utils/logger";
 
 const sequelize = new Sequelize(config.DATABASE_URL);
 
-const connect = async () => {
+const connectToDatabase = async () => {
   try {
     await sequelize.authenticate();
     logger.info("Connection to the database has been established successfully");
-    sequelize.close();
   } catch (error: unknown) {
     let errorMessage = "Unable to connect to the database: ";
     if (error instanceof Error) {
@@ -16,9 +15,10 @@ const connect = async () => {
     }
     logger.error(errorMessage);
   }
+  return null;
 };
 
-export default {
-  connect,
+module.exports = {
+  connectToDatabase,
   sequelize,
 };
