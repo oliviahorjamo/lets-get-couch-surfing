@@ -30,10 +30,8 @@ Friendship.init(
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: "friendships",
+    modelName: "friendship",
   }
 );
 
-Friendship.sync();
-
-export default Friendship;
+module.exports = Friendship;

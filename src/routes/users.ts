@@ -1,7 +1,7 @@
 // later the userextractor stuff here
 
 import express from "express";
-import User from "../models/user";
+const { User } = require("../models");
 
 const userRouter = express.Router();
 

@@ -36,10 +36,8 @@ Publication.init(
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: "publications",
+    modelName: "publication",
   }
 );
 
-Publication.sync();
-
-export default Publication;
+module.exports = Publication;

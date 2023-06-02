@@ -34,10 +34,8 @@ Message.init(
     sequelize,
     underscored: true,
     timestamps: true,
-    modelName: "messages",
+    modelName: "message",
   }
 );
 
-Message.sync();
-
-export default Message;
+module.exports = Message;

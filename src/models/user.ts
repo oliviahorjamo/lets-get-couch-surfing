@@ -31,6 +31,4 @@ User.init(
   }
 );
 
-User.sync();
-
-export default User;
+module.exports = User;
