@@ -1,7 +1,7 @@
-const User = require("./user");
-const Message = require("./message");
-const Publication = require("./publication");
-const Friendship = require("./friendship");
+import User from "./user";
+import Message from "./message";
+import Publication from "./publication";
+import Friendship from "./friendship";
 
 const models = [User, Message, Publication, Friendship];
 
@@ -15,12 +15,11 @@ Message.belongsToMany(User); // does it belong to one or multiple users if defin
 
 User.hasMany(Friendship);
 Friendship.belongsToMany(User);
-
-
-models.forEach((model) => model.sync());
 */
 
-module.exports = {
+models.forEach((model) => model.sync());
+
+export default {
   User,
   Publication,
   Message,

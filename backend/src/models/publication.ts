@@ -40,4 +40,4 @@ Publication.init(
   }
 );
 
-module.exports = Publication;
+export default Publication;

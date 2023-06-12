@@ -34,4 +34,4 @@ Friendship.init(
   }
 );
 
-module.exports = Friendship;
+export default Friendship;

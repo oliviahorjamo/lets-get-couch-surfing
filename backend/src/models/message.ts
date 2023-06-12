@@ -38,4 +38,4 @@ Message.init(
   }
 );
 
-module.exports = Message;
+export default Message;
