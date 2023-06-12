@@ -1,6 +1,6 @@
 import app from "../src/app";
 import supertest from "supertest";
-import User from "../src/models/user";
+import User from "../src/db/models/user";
 import db from "../src/db";
 const { sequelize } = db;
 
@@ -25,7 +25,9 @@ beforeEach(async () => {
 });
 
 test("user route returns a list of users", async () => {
-  await api.get("/api/users/").expect(200);
+  const response = await api.get("/api/users/");
+  const usernames = response.body.map((u) => u.username);
+  expect(usernames).toContain("testuser");
 });
 
 afterAll(async () => {

@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import db from "../db";
+import db from "../../db";
 const { sequelize } = db;
 
 class Friendship extends Model {}

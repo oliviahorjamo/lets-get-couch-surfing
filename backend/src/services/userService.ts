@@ -1,15 +1,13 @@
 // here all accesses to the database
 
-/*
-import User from "../models/user";
-import { UserInterface } from "../types/user";
+import User from "../db/models/user";
+import { UserAttributes } from "../types/user";
 
-export const create = async () => {
-  const user = User.create()
+export const getEntries = async (): Promise<UserAttributes[] | Error> => {
+  try {
+    const users = await User.findAll();
+    return users;
+  } catch (error) {
+    throw new Error("Failed to get users");
+  }
 };
-
-export const update = async () => {
-  // here updating the user info
-};
-
-*/
