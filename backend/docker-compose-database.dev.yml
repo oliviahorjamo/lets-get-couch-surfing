@@ -13,4 +13,7 @@ services:
       - "5432:5432"
     container_name: db
     volumes:
-      - ./volumes/postgres-data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
