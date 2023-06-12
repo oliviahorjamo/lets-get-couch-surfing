@@ -1,0 +1,16 @@
+# docker-compose joka tekee seuraavat asiat
+
+# käynnistää testitietokannan
+# ajaa testit
+# clean up the test environment after running the tests
+
+# services:
+# db-test:
+# image: postgres
+# if you set up the database here, you will always have two database instances running
+# it would make a lot more sense to have the test database running only when running tests
+
+# test:
+# image: test
+# luo Dockerfile joka ajaa testit ja käytä sitä edellä nimetyn imagen luomiseen
+# kysymys: Pitäiskö ajaa kaikki testit tässä samassa vai erikseen e2e testit ja yksikkötestit?
