@@ -4,7 +4,6 @@ import config from "../config";
 import logger from "./utils/logger";
 import db from "./db";
 const { connectToDatabase } = db;
-//const { connectToDatabase } = require("./db");
 
 const server = http.createServer(app);
 
