@@ -2,7 +2,9 @@ import app from "./app";
 import http from "http";
 import config from "../config";
 import logger from "./utils/logger";
-const { connectToDatabase } = require("./db");
+import db from "./db";
+const { connectToDatabase } = db;
+//const { connectToDatabase } = require("./db");
 
 const server = http.createServer(app);
 
