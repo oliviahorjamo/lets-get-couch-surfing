@@ -28,5 +28,5 @@ services:
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: test
     ports:
-      - "5432:5432"
+      - "5433:5432"
     container_name: test-db
