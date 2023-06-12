@@ -30,3 +30,9 @@ services:
     ports:
       - "5433:5432"
     container_name: test-db
+    restart: always
+    volumes:
+      - db_test_data:/var/lib/postgresql/data
+
+volumes:
+  db_test_data:
