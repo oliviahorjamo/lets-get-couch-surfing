@@ -1,44 +1,54 @@
-//import { UserAttributes } from "../types/user";
-import { Model, DataTypes } from "sequelize";
-import db from "../../db";
-import { UserAttributes } from "../../types/user";
-const { sequelize } = db;
+'use strict';
+import {
+  Model,
+  UUIDV4
+} from 'sequelize';
 
-class User extends Model<UserAttributes> implements UserAttributes {
-  public id!: number;
-  public name!: string;
-  public username!: string;
-  public password!: string;
-
-  // define associations here e.g. having multiple publications, messages and friendships
+interface UserAttributes {
+  id: string,
+  name: string,
+  username: string,
+  password: string
 }
 
-User.init(
-  {
+module.exports = (sequelize: any, DataTypes: any) => {
+  class User extends Model<UserAttributes>
+    implements UserAttributes {
+      id!: string;
+      name!: string;
+      username!: string;
+      password!: string;
+      static associate(models: any) {
+        User.hasMany(models.Publication, {
+          foreignKey: 'userId'
+        });
+      }
+  }
+
+  User.init({
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      allowNull: false,
+      primaryKey: true
     },
     name: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false
     },
     username: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     password: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-  },
-  {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  }, {
     sequelize,
-    underscored: true,
-    timestamps: false,
-    modelName: "user",
-  }
-);
-
-export default User;
+    modelName: 'User',
+  });
+  
+  return User;
+};

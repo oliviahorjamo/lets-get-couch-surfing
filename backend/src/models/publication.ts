@@ -1,44 +1,84 @@
-import { Model, DataTypes } from "sequelize";
-import db from "../../db";
-const { sequelize } = db;
+'use strict';
+import {
+  Model,
+  UUIDV4
+} from 'sequelize';
 
-class Publication extends Model {}
+// Questions: How to import the User model properly?
+// Currently the user model exports a function which returns the user model
+// How to handle createdAt
+// If you define timestamps, this attribute will be created
 
-Publication.init(
-  {
+interface PublicationAttributes {
+  id: number,
+  userId: String,
+  title: String,
+  message: String,
+  createdAt: Date,
+  updatedAt: Date
+  validUntil: Date
+}
+
+module.exports = (sequelize: any, DataTypes: any) => {
+  class Publication extends Model<PublicationAttributes>
+    implements PublicationAttributes {
+    
+      id!: number;
+      userId!: string;
+      title!: string;
+      message!: String;
+      createdAt!: Date;
+      updatedAt!: Date;
+      validUntil!: Date;
+
+    
+    static associate(models: any) {
+      // define association here
+      Publication.belongsTo(models.User,
+        { foreignKey: 'userId' });
+    }
+  }
+  Publication.init({
     id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     title: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    text: {
-      type: DataTypes.TEXT,
+    userId: {
+      type: DataTypes.UUID,
       allowNull: false,
+      references: {
+        model: 'User',
+        key: 'id'
+      }
     },
-    validFrom: {
-      type: DataTypes.DATE,
-      allowNull: false,
+    message: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
     validUntil: {
       type: DataTypes.DATE,
-      allowNull: true,
+      allowNull: false
     },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: { model: "users", key: "id" },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
     },
-  },
-  {
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
+    }
+  }, {
     sequelize,
-    underscored: true,
-    timestamps: false,
-    modelName: "publication",
-  }
-);
-
-export default Publication;
+    modelName: 'Publication',
+    timestamps: true
+  });
+  return Publication;
+};

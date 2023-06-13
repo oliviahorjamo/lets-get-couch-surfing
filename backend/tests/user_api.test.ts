@@ -1,8 +1,13 @@
 import app from "../src/app";
 import supertest from "supertest";
-import User from "../src/db/models/user";
+import User from "../src/models_original/user";
 import db from "../src/db";
 const { sequelize } = db;
+
+// How to write tests with typescript?
+// Should the tests be written in typescript or javascript?
+// The types should be correct just by accessing the database only through
+// routes
 
 const api = supertest(app);
 
