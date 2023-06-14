@@ -12,25 +12,3 @@ db.sequelize.sync().then(() => {
     logger.info(`Server running on port ${port}`);
   });
 });
-
-// sync the models here
-
-/*
-import http from "http";
-//import config from "./config/config.js";
-import logger from "./utils/logger";
-
-import db from "./db";
-const { connectToDatabase } = db;
-
-const server = http.createServer(app);
-
-const start = async () => {
-  await connectToDatabase();
-  server.listen({ port: process.env.PORT, host: "0.0.0.0" }, () => {
-    logger.info(`Server running on port ${process.env.PORT}`);
-  });
-};
-
-start();
-*/

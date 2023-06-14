@@ -1,13 +1,7 @@
 'use strict';
 import {
   Model,
-  UUIDV4
 } from 'sequelize';
-
-// Questions: How to import the User model properly?
-// Currently the user model exports a function which returns the user model
-// How to handle createdAt
-// If you define timestamps, this attribute will be created
 
 interface PublicationAttributes {
   id: number,
@@ -53,7 +47,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'User',
+        model: 'Users',
         key: 'id'
       }
     },

@@ -1,0 +1,1 @@
+// Here friendship info between two users

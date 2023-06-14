@@ -1,7 +1,7 @@
 'use strict';
 import {
   Model,
-  UUIDV4
+  UUIDV4,
 } from 'sequelize';
 
 interface UserAttributes {
