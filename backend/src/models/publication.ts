@@ -5,12 +5,11 @@ import {
 
 interface PublicationAttributes {
   id: number,
-  userId: String,
+  createdBy: String,
   title: String,
   message: String,
   createdAt: Date,
   updatedAt: Date
-  validUntil: Date
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -18,18 +17,17 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements PublicationAttributes {
     
       id!: number;
-      userId!: string;
+      createdBy!: string;
       title!: string;
       message!: String;
       createdAt!: Date;
       updatedAt!: Date;
-      validUntil!: Date;
 
     
     static associate(models: any) {
       // define association here
       Publication.belongsTo(models.User,
-        { foreignKey: 'userId' });
+        { foreignKey: 'createdBy' });
     }
   }
   Publication.init({
@@ -43,7 +41,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    userId: {
+    createdBy: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
@@ -53,10 +51,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     },
     message: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    validUntil: {
-      type: DataTypes.DATE,
       allowNull: false
     },
     createdAt: {

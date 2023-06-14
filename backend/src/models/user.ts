@@ -20,7 +20,12 @@ module.exports = (sequelize: any, DataTypes: any) => {
       password!: string;
       static associate(models: any) {
         User.hasMany(models.Publication, {
-          foreignKey: 'userId'
+          foreignKey: 'createdBy'
+        });
+
+        User.belongsToMany(models.User, {
+          as: 'Friends',
+          through: 'friends'
         });
       }
   }
