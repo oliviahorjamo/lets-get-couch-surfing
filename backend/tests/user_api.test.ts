@@ -1,7 +1,7 @@
 import app from "../src/app";
 import supertest from "supertest";
 import User from "../src/models_original/user";
-import db from "../src/db";
+import db from "../src/db/config";
 const { sequelize } = db;
 
 // How to write tests with typescript?
@@ -25,7 +25,7 @@ beforeEach(async () => {
     truncate: true,
     cascade: true,
   });
-  let userObject = User.build(inititalUsers[0]);
+  const userObject = User.build(inititalUsers[0]);
   await userObject.save();
 });
 

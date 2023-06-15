@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 //import userService from '../services/userService'
 import UserValidator from '../validators/users'; 
 import { v4 as uuidv4 } from 'uuid';
-import db from '../models';
 import Middleware from '../middleware';
 import UserController from '../controllers/users';
+import User from '../db/models/user';
 
 const userRouter = express.Router();
 
@@ -20,7 +20,7 @@ userRouter.post('/',
     const id = uuidv4();
     try {
       const userToCreate = {...req.body, id};
-      const record = await db.User.create(userToCreate);
+      const record = await User.create(userToCreate);
       return res.json({record});
     } catch (e) {
       return res.json(e);
@@ -30,7 +30,7 @@ userRouter.post('/',
 
 userRouter.get('/', async (req: Request, res: Response) => {
   try {
-    const records = await db.User.findAll({ where: {}});
+    const records = await User.findAll({ where: {}});
     return res.json(records);
   } catch (e) {
     return res.json(e);
