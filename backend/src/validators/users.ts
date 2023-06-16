@@ -2,6 +2,7 @@ import { body, param } from 'express-validator';
 
 class UserValidator {
   checkCreateUser() {
+    console.log('checking the creation of a new user');
     return [
       body('username')
         .notEmpty()

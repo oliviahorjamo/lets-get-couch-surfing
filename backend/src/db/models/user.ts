@@ -2,16 +2,21 @@
 import {
   Model,
   UUIDV4,
-  DataTypes
+  DataTypes,
+  Optional
 } from 'sequelize';
 import sequelizeConnection from '../config';
 
-interface UserAttributes {
+import { ModelInterface } from '.';
+
+export interface UserAttributes {
   id: string,
   name: string,
   username: string,
   password: string
 }
+
+export interface UserCreationAttributes extends Optional<UserAttributes, 'id'>{}
 
 class User extends Model<UserAttributes>
   implements UserAttributes {
@@ -19,7 +24,7 @@ class User extends Model<UserAttributes>
     name!: string;
     username!: string;
     password!: string;
-    static associate(models: any) {
+    static associate(models: ModelInterface) {
       // nää myöhemmin importattuna
       User.hasMany(models.Publication, {
         foreignKey: 'createdBy'
