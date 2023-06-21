@@ -1,0 +1,11 @@
+services:
+  app:
+    image: lets-get-couch-surfing-front-dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 3000:3000
+    container_name: lets-get-couch-surfing-front-dev
