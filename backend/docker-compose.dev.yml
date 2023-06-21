@@ -1,49 +1,3 @@
-# The docker-compose file for running the service in dev mode
-# services
-# backend:
-
-# db:
-# image: postgres
-# restart: always
-# ports: 5432:5432
-# environment:
-#   POSTGRES PASSWORD: anything but not empty, sets the superuser password
-#   POSTGRES_USER: create a specific user, if not specified, postgres user will be used
-#   POSTGRES_DB: define a different name for the default database
-#     initialization scripts: add *.sql scripts under /docker-entry-point-initdb-d
-#     might be useful when testing
-# volumes: for saving data between container run times
-#   one for initing the database
-#   ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
-#   write this file to initialize the tables, not necessary as sequelize does this for you
-
-# adminer:
-# this is a tool for managing databases
-# when going to 8080 you'll see a user interface
-# run on different port so that there are no conflicts with nginx
-# image: adminer
-# restart: always
-# ports: 8080:8080
-
-# after these the database should be available through 8080?
-
-# server:
-# image: couch-surfing-backend (create this first)
-# dockerfile: dev.Dockerfile
-# container-name: couch-surfing-backend
-# depends-on: db
-
-# Dockerfile
-# from: node:16
-# copy everything
-# install dependencies
-# run dev
-# when you have this file, build the backend image with name couch-surfing-backend
-# test that you can run backend by using this image (docker run couch-surfing-backend)
-
-# Maybe another Dockerfile for running the postgres database only
-# This would allow running the postgres database containerized and the server itself locally
-
 version: "3.8"
 
 services:
@@ -58,13 +12,18 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
   backend:
-    image: couch-surfing-backend
-    build: .
+    image: lets-get-couch-surfing-back-dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:secret@postgres:5432/postgres # miks tää ei oo localhost:5432 vaan postgres:5432?
+      - DEV_DB_URL=postgresql://postgres:secret@db:5432/postgres # miks tää ei oo localhost:5432 vaan postgres:5432?
     ports:
       - 3001:3001
     command: npm run dev
+    depends_on:
+      - db
+    container_name: lets-get-couch-surfing-back-dev
 
 volumes:
   db_data:
