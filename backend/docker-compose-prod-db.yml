@@ -13,16 +13,6 @@ services:
     restart: always
     volumes:
       - db_prod_data:/var/lib/postgresql/data
-  backend:
-    image: lets-get-couch-surfing-back-dev
-    environment:
-      - PROD_DB_URL=postgresql://postgres:secret@db:5432/prod
-    ports:
-      - 3001:3001
-    depends_on:
-      - db
-    command: npm run start
-    container_name: lets-get-couch-surfing-back-prod
 
 volumes:
   db_prod_data:

@@ -8,6 +8,17 @@ Content-Type: application/json
   "password": "secret"
 }
 
+
+###
+// Here all rest requests to user routes for testing the app
+post http://localhost:8080/api/api/users
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "username": "testuser100",
+  "password": "secret"
+}
 ###
 get http://localhost:3001/api/users
 
