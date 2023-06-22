@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: prod
+    ports:
+      - "5432:5432"
+    container_name: prod-db
+    restart: always
+    volumes:
+      - db_prod_data:/var/lib/postgresql/data
+  backend:
+    image: lets-get-couch-surfing-back-dev
+    environment:
+      - PROD_DB_URL=postgresql://postgres:secret@db:5432/prod
+    ports:
+      - 3001:3001
+    depends_on:
+      - db
+    command: npm run start
+    container_name: lets-get-couch-surding-back-prod
+
+volumes:
+  db_prod_data:

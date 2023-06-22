@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-require('dotenv').config();
+require("dotenv").config();
 
 import { Dialect } from "sequelize";
 
@@ -19,5 +19,5 @@ switch (process.env.NODE_ENV) {
 export default {
   PORT: process.env.PORT || 3001,
   DB_URL: DB_URL as string,
-  DIALECT: process.env.DIALECT as Dialect
+  DIALECT: process.env.DIALECT as Dialect,
 };

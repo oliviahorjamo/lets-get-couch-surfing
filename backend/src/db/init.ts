@@ -27,7 +27,6 @@ const createUsers = async () => {
   console.log("starting to create users");
   try {
     for (const user of users) {
-      console.log("user", user);
       await User.findOrCreate({
         where: {
           username: user.username,
