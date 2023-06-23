@@ -1,8 +1,8 @@
 import { useAppDispatch } from "./hooks";
 import { useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import Home from "./components/Home";
-import SignIn from "./components/SignIn";
+import Home from "./pages/Home/Home";
+import SignIn from "./pages/SignIn";
 import { initializeUsers } from "./reducers/userReducer";
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/" element={<SignIn />}></Route>
+        <Route path="/signin" element={<SignIn />}></Route>
       </Routes>
     </div>
   );
