@@ -34,7 +34,6 @@ const createUsers = async () => {
         defaults: {
           name: user.name,
           password: user.password,
-          id: user.id,
           username: user.username,
         },
       });

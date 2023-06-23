@@ -1,14 +1,20 @@
 import User from "../src/db/models/user";
-import { v4 as uuidv4 } from "uuid";
+import { UserInputAttributes, UserOutputAttributes } from "../src/db/models/user";
+//import toNewUserEntry from "../src/utils/mappers/users";
 
-const initialUsers = [
+const initialUsers: UserInputAttributes[] = [
   {
     name: "Tester",
     username: "testuser",
-    password: "secret",
-    id: uuidv4(),
-  },
+    password: "secret"
+  }
 ];
+
+const newUser: UserInputAttributes = {
+  name: "Tester 2",
+  username: "testuser2",
+  password: "secret"
+};
 
 /*
 const nonExistingId = async () => {
@@ -25,12 +31,11 @@ const nonExistingId = async () => {
 };
 */
 
-const usersInDb = async () => {
-  const users = await User.find({});
-  return users.map((user) => user.toJSON());
+const usersInDb = async (): Promise<UserOutputAttributes[]> => {
+  const users = await User.findAll({});
+  const stringifiedUsers = users.map(user => JSON.stringify(user));
+  const jsonUsers = stringifiedUsers.map(user => JSON.parse(user));
+  return jsonUsers;
 };
 
-module.exports = {
-  initialUsers,
-  usersInDb,
-};
+export default { initialUsers, newUser, usersInDb};

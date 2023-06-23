@@ -1,6 +1,6 @@
-import User, { UserAttributes } from "../models/user";
+import User, { UserInputAttributes, UserOutputAttributes } from "../models/user";
 
-export const getById = async (id: string): Promise<UserAttributes> => {
+export const getById = async (id: string): Promise<UserOutputAttributes> => {
   const user = await User.findByPk(id);
   if (!user) {
     // @todo throw custom error
@@ -9,7 +9,7 @@ export const getById = async (id: string): Promise<UserAttributes> => {
   return user;
 };
 
-export const getAll = async (): Promise<UserAttributes[]> => {
+export const getAll = async (): Promise<UserOutputAttributes[]> => {
   const users = await User.findAll({ where: {} });
   if (!users) {
     throw new Error("users not found");
@@ -18,8 +18,8 @@ export const getAll = async (): Promise<UserAttributes[]> => {
 };
 
 export const createNew = async (
-  user: UserAttributes
-): Promise<UserAttributes> => {
+  user: UserInputAttributes
+): Promise<UserOutputAttributes> => {
   const userCreated = await User.create(user);
   if (!userCreated) {
     throw new Error("something went wrong with user creation");

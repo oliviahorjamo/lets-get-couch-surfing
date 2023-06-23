@@ -1,11 +1,10 @@
 import app from "../src/app";
 import supertest from "supertest";
 import User from "../src/db/models/user";
-import { v4 as uuidv4 } from "uuid";
 import sequelizeConnection from "../src/db/config";
 import { UserAttributes } from "../src/db/models/user";
 import initDb from "../src/db/init";
-import * as helper from "./user_test_helper";
+import helper from "./user_test_helper";
 
 const api = supertest(app);
 
@@ -23,42 +22,64 @@ beforeAll(() => {
     });
 });
 
-const inititalUsers = [
-  {
-    name: "Tester",
-    username: "testuser",
-    password: "secret",
-    id: uuidv4(),
-  },
-];
-
 beforeEach(async () => {
   await User.destroy({
     where: {},
     truncate: true,
     cascade: true,
   });
-  const userObject = User.build(inititalUsers[0]);
-  await userObject.save();
+  const userObjects = helper.initialUsers
+    .map(user => new User(user));
+  const promiseArray = userObjects.map(user => user.save());
+  await Promise.all(promiseArray);
 });
 
-describe("get requests", () => {
-  test("user route returns a list of users", async () => {
+describe("getting all users", () => {
+  test("specific user within the returned users", async () => {
     const response = await api.get("/api/users/");
     const users = assertResponseType<UserAttributes[]>(response);
     const usernames = users.map((u) => u.username);
     expect(usernames).toContain("testuser");
   });
 
-  test("getting one user works", async () => {
-    const usersAtBeginning = await helper.usersInDb();
-    const userToView = usersAtBeginning[0];
+  test("all users are returned", async () => {
+    const response = await api.get("/api/users");
+    expect(response.body).toHaveLength(helper.initialUsers.length);
+  });
+
+});
+
+describe("viewing a specific user", () => {
+  test("succeeds with a valid id", async () => {
+    const usersAtStart = await helper.usersInDb();
+    const userToView = usersAtStart[0];
     const resultUser = await api
       .get(`/api/users/${userToView.id}`)
       .expect(200)
-      .expect("Content-Type", /application\/json/);
-
+      .expect('Content-Type', /application\/json/);
     expect(resultUser.body).toEqual(userToView);
+  });
+});
+
+describe("adding a new user", () => {
+  test("user with a new username can be added", async() => {
+    await api.post("/api/users/")
+      .send(helper.newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const response = await api.get('/api/users');
+    const usersAtEnd = assertResponseType<UserAttributes[]>(response);
+    expect(usersAtEnd).toHaveLength(helper.initialUsers.length + 1);
+
+    const usernames = usersAtEnd.map((u) => u.username);
+    expect(usernames).toContain("testuser2");
+  });
+
+  test("duplicate usernames not allowed", async () => {
+    await api.post("/api/users/")
+      .send(helper.initialUsers[0])
+      .expect(500);
   });
 });
 

@@ -2,8 +2,7 @@
 import {
   Model,
   UUIDV4,
-  DataTypes,
-  Optional
+  DataTypes
 } from 'sequelize';
 import sequelizeConnection from '../config';
 
@@ -13,19 +12,25 @@ export interface UserAttributes {
   id: string,
   name: string,
   username: string,
-  password: string
+  password: string,
+  createdAt?: Date,
+  updatedAt?: Date
 }
 
-export interface UserCreationAttributes extends Optional<UserAttributes, 'id'>{}
+export type UserInputAttributes = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+export type UserOutputAttributes = Required<UserAttributes>;
 
-class User extends Model<UserAttributes>
+
+class User extends Model<UserAttributes, UserInputAttributes>
   implements UserAttributes {
     id!: string;
     name!: string;
     username!: string;
     password!: string;
+    createdAt!: Date;
+    updatedAt!: Date;
+
     static associate(models: ModelInterface) {
-      // nää myöhemmin importattuna
       User.hasMany(models.Publication, {
         foreignKey: 'createdBy'
       });
@@ -56,10 +61,11 @@ User.init({
   password: {
     type: DataTypes.STRING,
     allowNull: false
-  }
+  },
 }, {
   sequelize: sequelizeConnection,
   modelName: 'User',
+  timestamps: true
 });
 
 export default User;

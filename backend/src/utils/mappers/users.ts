@@ -1,8 +1,28 @@
 // Here all information related to mapping data to types
-import { UserAttributes } from "../../db/models/user";
-import { isString, isUuidString } from ".";
+import { UserInputAttributes, UserOutputAttributes } from "../../db/models/user";
+import { isString, isUuidString, isDate } from ".";
 
-const toNewUserEntry = (object: unknown): UserAttributes => {
+const toNewUserEntry = (object: unknown): UserInputAttributes => {
+  if (!object || typeof object !== "object") {
+    throw new Error("Incorrect or missing data for user");
+  }
+
+  if (
+    "name" in object &&
+    "username" in object &&
+    "password" in object
+  ) {
+    const newEntry = {
+      name: parseName(object.name),
+      username: parseUserName(object.username),
+      password: parsePassword(object.password),
+    };
+    return newEntry;
+  }
+  throw new Error("Incorrect data for user: some fields are missing");
+};
+
+const toUserEntry = (object: unknown): UserOutputAttributes => {
   if (!object || typeof object !== "object") {
     throw new Error("Incorrect or missing data for user");
   }
@@ -11,17 +31,28 @@ const toNewUserEntry = (object: unknown): UserAttributes => {
     "name" in object &&
     "username" in object &&
     "password" in object &&
-    "id" in object
+    "id" in object &&
+    "createdAt" in object &&
+    "updatedAt" in object
   ) {
-    const newEntry = {
+    const userEntry = {
       name: parseName(object.name),
       username: parseUserName(object.username),
       password: parsePassword(object.password),
       id: parseUuid(object.id),
+      createdAt: parseDate(object.createdAt),
+      updatedAt: parseDate(object.createdAt)
     };
-    return newEntry;
+    return userEntry;
   }
-  throw new Error("Incorrect data for user: somefields are missing");
+  throw new Error("Incorrect date returned from db: some fields are missing");
+};
+
+const parseDate = (date: unknown): Date => {
+  if (!date || !isDate(date)) {
+    throw new Error('Incorrect or missing date');
+  }
+  return date;
 };
 
 const parseUserName = (username: unknown): string => {
@@ -52,4 +83,7 @@ export const parseUuid = (id: unknown): string => {
   return id;
 };
 
-export default toNewUserEntry;
+export default {
+  toNewUserEntry,
+  toUserEntry
+};
