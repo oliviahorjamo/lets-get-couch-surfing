@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import loginService from "../services/login";
 import storageService from '../services/storage'
-import { Credentials } from "../types/login";
+import { LoginCredentials } from "../types/login";
 import { AppDispatch } from "../store";
 
 
@@ -18,7 +18,7 @@ const userSlice = createSlice({
   },
 });
 
-export const logUserIn = (credentials: Credentials) => {
+export const logUserIn = (credentials: LoginCredentials) => {
   return async (dispatch: AppDispatch) => {
     try {
       const user = await loginService.login(credentials)

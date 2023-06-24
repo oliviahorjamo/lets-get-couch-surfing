@@ -1,14 +1,37 @@
 import "./SignIn.css"
+import { Button, Input } from "../../styles"
+import { useField } from "../../hooks"
+import { UserOutputAttributes } from "../../types/users"
+import loginService from "../../services/login"
 
 interface Props {
   changeForm: () => void
 }
 
 const SignUpForm = ({changeForm}: Props) => {
-  // this is a component for creating a new user
+  const username = useField('text')
+  const password = useField('password')
+  const passwordAgain = useField('password')
+  const name = useField('text')
 
-  const submitForm = () => {
-    console.log('signing up the user')
+  const submitForm = (event: React.SyntheticEvent): void => {
+    event.preventDefault()
+    const credentials = {
+      username: username.fields.value,
+      password: password.fields.value,
+      name: name.fields.value
+    }
+    loginService
+      .signup(credentials)
+      .then((user: UserOutputAttributes) => {
+        // log the user in and set the user to storage service by
+        // dispatching the userReducer logUserIn action creator
+        console.log(user)
+      })
+      .catch(() => {
+        // catch an error here
+        // notify with a notify component
+      })
   }
 
   return (
@@ -25,40 +48,36 @@ const SignUpForm = ({changeForm}: Props) => {
         </div>
         <div className="form-group mt-3">
           <label>Name</label>
-          <input
-            type="name"
-            className="form-control mt-1"
+          <Input
+            { ...name.fields }
             placeholder="Enter name"
           />
         </div>
         <div className="form-group mt-3">
           <label>Username</label>
-          <input
-            type="username"
-            className="form-control mt-1"
+          <Input
+            { ...username.fields }
             placeholder="Enter username"
           />
         </div>
         <div className="form-group mt-3">
           <label>Password</label>
-          <input
-            type="password"
-            className="form-control mt-1"
+          <Input
+            { ...password.fields }
             placeholder="Enter password"
           />
         </div>
         <div className="form-group mt-3">
           <label>Password again</label>
-          <input
-            type="password-again"
-            className="form-control mt-1"
+          <Input
+            { ...passwordAgain.fields }
             placeholder="Enter password again"
           />
         </div>
         <div className="d-grid gap-2 mt-3">
-          <button type="submit" className="btn btn-primary">
+          <Button type="submit" className="btn btn-primary">
             Sign Up
-          </button>
+          </Button>
         </div>
       </form>
 

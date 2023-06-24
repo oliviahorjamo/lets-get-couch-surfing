@@ -1,18 +1,39 @@
+import { Button, Input }from '../../styles'
+import loginService from "../../services/login"
+import { useField } from '../../hooks'
+import { UserOutputAttributes } from '../../types/users'
 
 interface Props {
   changeForm: () => void
 }
 
-
 const LogInForm = ({changeForm}: Props) => {
 
-  const submitForm = () => {
-    console.log('form submitted')
+  const username = useField('text')
+  const password = useField('password')
+
+  const submitForm = (event: React.SyntheticEvent): void => {
+    event.preventDefault()
+    const credentials = {
+      username: username.fields.value,
+      password: password.fields.value
+    }
+    loginService
+      .login(credentials)
+      .then((user: UserOutputAttributes) => {
+        // set the user here to storage with storageService
+        // log the user in by dispatching login from userReducer
+        console.log(user)
+      })
+      .catch(() => {
+        // catch an error here
+        // notify with a notify component
+      })
   }
 
   return (
     <div className='Auth-form-container'>
-      <form className="Auth-form" onSubmit={submitForm}>
+      <form className="Auth-form" onSubmit={(event: React.SyntheticEvent) => submitForm(event)}>
         <div className="Auth-form-content">
           <h3 className="Auth-form-title">Log In</h3>
         </div>
@@ -26,24 +47,22 @@ const LogInForm = ({changeForm}: Props) => {
         </div>
         <div className="form-group mt-3">
           <label>Username</label>
-          <input
-            type="username"
-            className="form-control mt-1"
+          <Input
+            { ...username.fields }
             placeholder="Enter username"
           />
         </div>
         <div className="form-group mt-3">
           <label>Password</label>
-          <input
-            type="password"
-            className="form-control mt-1"
+          <Input
+            { ...password.fields }
             placeholder="Enter password"
           />
         </div>
         <div className="d-grid gap-2 mt-3">
-          <button type="submit" className="btn btn-primary">
+          <Button type="submit">
             Log In
-          </button>
+          </Button>
         </div>
       </form>
     </div>
