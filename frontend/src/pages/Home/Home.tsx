@@ -6,7 +6,14 @@ const Home = () => {
   if (!users) {
     return <div></div>;
   }
-  return <div>{users.map((u) => u.username)}</div>;
+  return <div>
+    <h1>Users in this app</h1>
+    {users.map((u) => 
+    <li key={u.username}>
+      {u.username}
+    </li>
+    )}
+    </div>;
 };
 
 export default Home;
