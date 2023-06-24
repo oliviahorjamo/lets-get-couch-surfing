@@ -14,7 +14,7 @@ const LogInForm = ({changeForm}: Props) => {
     <div className='Auth-form-container'>
       <form className="Auth-form" onSubmit={submitForm}>
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign Up</h3>
+          <h3 className="Auth-form-title">Log In</h3>
         </div>
         <div className="text-center">
           Not registered yet?{" "}

@@ -20,7 +20,7 @@ const SignUpForm = ({changeForm}: Props) => {
         <div className='text-center'>
           Already registered?{" "}
           <span className="link-primary" onClick={changeForm}>
-            Sign In
+            Log In
           </span>
         </div>
         <div className="form-group mt-3">

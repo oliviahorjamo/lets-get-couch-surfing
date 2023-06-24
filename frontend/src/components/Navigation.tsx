@@ -15,7 +15,6 @@ const Navigation = () => {
   return (
     <NavigationStyle>
         <Link style={padding} to="/">home</Link>
-        <Link style={padding} to="/signin">sign in</Link>
 
     </NavigationStyle>
   );
