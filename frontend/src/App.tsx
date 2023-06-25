@@ -1,6 +1,7 @@
 import { useAppDispatch } from "./hooks";
 import { useEffect } from "react";
 import { initializeUsers } from "./reducers/usersReducer";
+import { initUser } from "./reducers/userReducer";
 import Navigation from "./components/Navigation";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
@@ -10,21 +11,15 @@ import { useAppSelector } from "./hooks";
 const App = () => {
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector(state => state.user)
-  console.log('user from local storage', user)
-
-  // a use effect for setting user to storage here
+  const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(initializeUsers());
-    // here initialize publications?
+    dispatch(initUser());
   }, [dispatch]);
 
-
   if (!user) {
-    return (
-      <SignIn />
-    )
+    return <SignIn />;
   }
 
   return (
