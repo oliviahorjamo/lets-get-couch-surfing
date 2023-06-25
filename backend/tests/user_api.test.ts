@@ -2,7 +2,7 @@ import app from "../src/app";
 import supertest from "supertest";
 import User from "../src/db/models/user";
 import sequelizeConnection from "../src/db/config";
-import { UserAttributes } from "../src/db/models/user";
+import { UserOutputAttributes } from "../src/db/models/user";
 import initDb from "../src/db/init";
 import helper from "./user_test_helper";
 
@@ -37,7 +37,7 @@ beforeEach(async () => {
 describe("getting all users", () => {
   test("specific user within the returned users", async () => {
     const response = await api.get("/api/users/");
-    const users = assertResponseType<UserAttributes[]>(response);
+    const users = assertResponseType<UserOutputAttributes[]>(response);
     const usernames = users.map((u) => u.username);
     expect(usernames).toContain("testuser");
   });
@@ -69,7 +69,7 @@ describe("adding a new user", () => {
       .expect('Content-Type', /application\/json/);
 
     const response = await api.get('/api/users');
-    const usersAtEnd = assertResponseType<UserAttributes[]>(response);
+    const usersAtEnd = assertResponseType<UserOutputAttributes[]>(response);
     expect(usersAtEnd).toHaveLength(helper.initialUsers.length + 1);
 
     const usernames = usersAtEnd.map((u) => u.username);

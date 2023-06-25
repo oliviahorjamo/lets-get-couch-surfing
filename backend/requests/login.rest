@@ -1,0 +1,4 @@
+
+// Here all rest requests to user routes for testing the app
+post http://localhost:3001/api/login
+Content-Type: application/json
