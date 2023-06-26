@@ -1,21 +1,25 @@
-import User, { UserOutputAttributes } from "../models/user";
+import User from "../models/user";
 import { LoginCredentials } from "../../types";
+import { UserOutputAttributes } from "../../types";
+
+const passwordCorrect = (correctPassword: string, passwordGiven: string): boolean => {
+  return passwordGiven === correctPassword;
+};
 
 export const login = async (
   credentials: LoginCredentials
 ): Promise<UserOutputAttributes | null> => {
-  console.log(credentials);
   const user = await User.findOne({
     where: { username: credentials.username },
   });
-  console.log("user found", user);
-  return user;
-  /*
-  const user = await User.findByPk(id);
   if (!user) {
-    // @todo throw custom error
-    throw new Error("user not found");
+    throw new Error("User not found with the given username");
+  } else {
+    if (passwordCorrect(user.password, credentials.password)) {
+      return user;
+    } else {
+      console.log('handling wrong password');
+      throw new Error("Incorrect password");
+    }
   }
-  return user;
-  */
 };

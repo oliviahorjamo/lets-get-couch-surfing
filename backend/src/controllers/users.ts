@@ -1,11 +1,11 @@
 import { Request, RequestHandler, Response } from "express";
-import { UserInputAttributes } from "../db/models/user";
+import { UserInputAttributes } from "../types";
 import mapper from "../utils/mappers/users";
-import { parseUuid } from "../utils/mappers/users";
+import parser from "../utils/parsers";
 import * as userDal from "../db/dal/users";
 
 export const getById: RequestHandler = (req: Request, res: Response): void => {
-  const id = parseUuid(req.params.id);
+  const id = parser.parseUuid(req.params.id);
   userDal
     .getById(id)
     .then((record) => {
@@ -26,8 +26,8 @@ export const createNew: RequestHandler = (
     .then((record) => {
       return res.status(201).json(record);
     })
-    .catch((e) => {
-      return res.status(500).json(e);
+    .catch((e: Error) => {
+      return res.status(500).json(e.message);
     });
 };
 

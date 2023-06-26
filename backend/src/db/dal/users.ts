@@ -1,4 +1,5 @@
-import User, { UserInputAttributes, UserOutputAttributes } from "../models/user";
+import { UserInputAttributes, UserOutputAttributes } from "../../types";
+import User from "../models/user";
 
 export const getById = async (id: string): Promise<UserOutputAttributes> => {
   const user = await User.findByPk(id);
@@ -20,9 +21,15 @@ export const getAll = async (): Promise<UserOutputAttributes[]> => {
 export const createNew = async (
   user: UserInputAttributes
 ): Promise<UserOutputAttributes> => {
-  const userCreated = await User.create(user);
-  if (!userCreated) {
-    throw new Error("something went wrong with user creation");
+  try {
+    const userCreated = await User.create(user);
+    return userCreated;
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
+    }
+    console.log('error message in create new', errorMessage);
+    throw new Error(errorMessage);
   }
-  return userCreated;
 };

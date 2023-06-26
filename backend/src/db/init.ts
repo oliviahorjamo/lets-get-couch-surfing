@@ -4,6 +4,8 @@ import Publication from "./models/publication";
 import logger from "../utils/logger";
 import { users } from "../seeders/users";
 import { publications } from "../seeders/publications";
+import mapper from "../utils/mappers/users";
+import { UserInputAttributes } from "../types";
 
 const initDb = async (): Promise<void> => {
   try {
@@ -27,14 +29,15 @@ const createUsers = async () => {
   console.log("starting to create users");
   try {
     for (const user of users) {
+      const newUser: UserInputAttributes = mapper.toNewUserEntry(user);
       await User.findOrCreate({
         where: {
-          username: user.username,
+          username: newUser.username,
         },
         defaults: {
-          name: user.name,
-          password: user.password,
-          username: user.username,
+          name: newUser.name,
+          password: newUser.password,
+          username: newUser.username,
         },
       });
       logger.info("created initial users");

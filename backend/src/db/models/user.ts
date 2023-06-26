@@ -5,21 +5,8 @@ import {
   DataTypes
 } from 'sequelize';
 import sequelizeConnection from '../config';
-
+import { UserAttributes, UserInputAttributes } from '../../types';
 import { ModelInterface } from '.';
-
-export interface UserAttributes {
-  id: string,
-  name: string,
-  username: string,
-  password: string,
-  createdAt?: Date,
-  updatedAt?: Date
-}
-
-export type UserInputAttributes = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;
-export type UserOutputAttributes = Required<UserAttributes>;
-
 
 class User extends Model<UserAttributes, UserInputAttributes>
   implements UserAttributes {

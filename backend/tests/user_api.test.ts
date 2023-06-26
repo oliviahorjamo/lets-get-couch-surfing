@@ -2,7 +2,7 @@ import app from "../src/app";
 import supertest from "supertest";
 import User from "../src/db/models/user";
 import sequelizeConnection from "../src/db/config";
-import { UserOutputAttributes } from "../src/db/models/user";
+import { UserOutputAttributes } from "../src/types";
 import initDb from "../src/db/init";
 import helper from "./user_test_helper";
 
@@ -77,9 +77,11 @@ describe("adding a new user", () => {
   });
 
   test("duplicate usernames not allowed", async () => {
-    await api.post("/api/users/")
-      .send(helper.initialUsers[0])
-      .expect(500);
+    const usersInDb = await helper.usersInDb();
+    const existingUser = usersInDb[0];
+    const response = await api.post("/api/users").send(existingUser);
+    expect(response.status).toEqual(500);
+    expect(response.body).toContain("Something went wrong. Error: Validation error");
   });
 });
 

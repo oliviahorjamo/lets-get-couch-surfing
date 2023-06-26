@@ -2,10 +2,12 @@ import app from "../src/app";
 import supertest from "supertest";
 import User from "../src/db/models/user";
 import sequelizeConnection from "../src/db/config";
-import { UserOutputAttributes } from "../src/db/models/user";
+import { UserOutputAttributes, UserInputAttributes } from "../src/types";
 import { LoginCredentials } from "../src/types";
 import initDb from "../src/db/init";
 import helper from "./user_test_helper";
+import loginMapper from "../src/utils/mappers/login";
+import userMapper from "../src/utils/mappers/users";
 
 const api = supertest(app);
 
@@ -36,17 +38,44 @@ beforeEach(async () => {
 
 describe("logging in with existing user works", () => {
   test("existing user can log in", async () => {
-    await api.post("/api/login").expect(200);
+    const usersInDb = await helper.usersInDb();
+    const userToLogin: UserOutputAttributes = usersInDb[0];
+    const loginCredentials = {username: userToLogin.username, password: userToLogin.password};
+    const response = await api.post("/api/login")
+      .send(loginCredentials)
+      .expect(200);
+    // Mapping to UserEntry doesn't work here as the dates in the -response body
+    // are returned as strings and not dates due to sending them as res.json().
+    // This is likely to create issues in the frontend when mapping the objects returned to userEntries.
+    // In the backend the types are related to data returned from the backend
+    // In the frontend the types are related to json data --> dates handled differently
+
+    //const username = userMapper.toUserEntry(response.body).username;
+    const username = response.body.username;
+    expect(username).toEqual(userToLogin.username);
+
   });
 });
 
 describe("logging in with wrong credentials doesn't work", () => {
-  test("loggin in with wrong password doesn't work", async () => {
-    // test here
+  test("logging in with wrong password doesn't work", async () => {
+    const usersInDb = await helper.usersInDb();
+    const userTologin: UserOutputAttributes = usersInDb[0];
+    const loginCredentials = { username: userTologin.username, password: userTologin.password + "wrong"};
+    const response = await api.post("/api/login")
+      .send(loginCredentials)
+      .expect(500);
+    expect(response.body).toContain("Incorrect password");
   });
 
-  test("loggin in with non existing username doesn't work", async () => {
-    // test here
+  test("logging in with non existing username doesn't work", async () => {
+    const usersInDb = await helper.usersInDb();
+    const userTologin: UserOutputAttributes = usersInDb[0];
+    const loginCredentials = { username: userTologin.username + "new", password: userTologin.password};
+    const response = await api.post("/api/login")
+      .send(loginCredentials)
+      .expect(500);
+    expect(response.body).toContain("User not found with the given username");
   });
 });
 

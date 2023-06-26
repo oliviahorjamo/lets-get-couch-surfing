@@ -1,6 +1,6 @@
 import User from "../src/db/models/user";
-import { UserInputAttributes, UserOutputAttributes } from "../src/db/models/user";
-//import toNewUserEntry from "../src/utils/mappers/users";
+import { UserInputAttributes, UserOutputAttributes } from "../src/types";
+import mapper from "../src/utils/mappers/users";
 
 const initialUsers: UserInputAttributes[] = [
   {
@@ -8,7 +8,9 @@ const initialUsers: UserInputAttributes[] = [
     username: "testuser",
     password: "secret"
   }
-];
+].map(
+  u => mapper.toNewUserEntry(u)
+);
 
 const newUser: UserInputAttributes = {
   name: "Tester 2",
