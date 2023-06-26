@@ -1,13 +1,15 @@
 import { Button, Input }from '../../styles'
 import loginService from "../../services/login"
-import { useField } from '../../hooks'
+import { useAppDispatch, useField } from '../../hooks'
 import { UserOutputAttributes } from '../../types/users'
+import { logUserIn } from '../../reducers/userReducer'
 
 interface Props {
   changeForm: () => void
 }
 
 const LogInForm = ({changeForm}: Props) => {
+  const dispatch = useAppDispatch()
 
   const username = useField('text')
   const password = useField('password')
@@ -23,7 +25,7 @@ const LogInForm = ({changeForm}: Props) => {
       .then((user: UserOutputAttributes) => {
         // set the user here to storage with storageService
         // log the user in by dispatching login from userReducer
-        console.log(user)
+        dispatch(logUserIn(user))
       })
       .catch(() => {
         // catch an error here

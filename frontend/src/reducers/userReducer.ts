@@ -54,5 +54,12 @@ export const initUser = () => {
   };
 };
 
-export const { setLoggedUser } = userSlice.actions;
+export const clearUser = () => {
+  return async (dispatch: AppDispatch) => {
+    storageService.removeUser()
+    dispatch(removeLoggedUser(null))
+  }
+}
+
+export const { setLoggedUser, removeLoggedUser } = userSlice.actions;
 export default userSlice.reducer;

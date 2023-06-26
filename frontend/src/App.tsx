@@ -1,7 +1,7 @@
 import { useAppDispatch } from "./hooks";
 import { useEffect } from "react";
 import { initializeUsers } from "./reducers/usersReducer";
-import { initUser } from "./reducers/userReducer";
+import { initUser, clearUser } from "./reducers/userReducer";
 import Navigation from "./components/Navigation";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
