@@ -18,7 +18,6 @@ export const login = async (
     if (passwordCorrect(user.password, credentials.password)) {
       return user;
     } else {
-      console.log('handling wrong password');
       throw new Error("Incorrect password");
     }
   }

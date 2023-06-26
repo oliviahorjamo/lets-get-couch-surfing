@@ -2,12 +2,9 @@ import app from "../src/app";
 import supertest from "supertest";
 import User from "../src/db/models/user";
 import sequelizeConnection from "../src/db/config";
-import { UserOutputAttributes, UserInputAttributes } from "../src/types";
-import { LoginCredentials } from "../src/types";
+import { UserOutputAttributes } from "../src/types";
 import initDb from "../src/db/init";
 import helper from "./user_test_helper";
-import loginMapper from "../src/utils/mappers/login";
-import userMapper from "../src/utils/mappers/users";
 
 const api = supertest(app);
 
