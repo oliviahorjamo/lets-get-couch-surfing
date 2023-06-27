@@ -12,3 +12,6 @@ export const Button = styled.button`
 export const Input = styled.input`
   margin: 0.25em;
 `
+export const Container = styled.div`
+  background-color: ${props => props.theme.colors.orange};
+`
