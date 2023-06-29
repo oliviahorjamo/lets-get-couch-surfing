@@ -1,9 +1,15 @@
-import "./SignIn.css";
-import { Button, Input } from "../../styles";
+import { Button, Input, StyledLink } from "../../styles";
 import { useAppDispatch, useField } from "../../hooks";
 //import { UserOutputAttributes } from "../../types/users";
 //import loginService from "../../services/login";
 import { signUpUser } from "../../reducers/userReducer";
+import {
+  BoxContent,
+  LabelInputWrapper,
+  StyledForm,
+  StyledLabel,
+  StyledText,
+} from "./styles";
 
 interface Props {
   changeForm: () => void;
@@ -26,41 +32,52 @@ const SignUpForm = ({ changeForm }: Props) => {
     dispatch(signUpUser(credentials));
   };
 
+  const fieldValues = [
+    name.fields.value,
+    username.fields.value,
+    password.fields.value,
+    passwordAgain.fields.value,
+  ];
+
+  const buttonDisabled = fieldValues.filter((v) => v.length === 0).length !== 0;
+
+  /*
+  const passwordAgainInvalid = () => {
+    console.log('password', password)
+    console.log('password again', passwordAgain)
+    return true
+  }
+  */
+
   return (
-    <div className="Auth-form-container">
-      <form className="Auth-form" onSubmit={submitForm}>
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign Up</h3>
-        </div>
-        <div className="text-center">
-          Already registered?{" "}
-          <span className="link-primary" onClick={changeForm}>
-            Log In
-          </span>
-        </div>
-        <div className="form-group mt-3">
+    <BoxContent>
+      <h2>Sign Up</h2>
+      <StyledText>
+        Already registered?
+        <StyledLink onClick={changeForm}> Log In</StyledLink>
+      </StyledText>
+      <StyledForm onSubmit={submitForm}>
+        <LabelInputWrapper>
           <label>Name</label>
-          <Input {...name.fields} placeholder="Enter name" />
-        </div>
-        <div className="form-group mt-3">
+          <Input {...name.fields} />
+        </LabelInputWrapper>
+        <LabelInputWrapper>
           <label>Username</label>
-          <Input {...username.fields} placeholder="Enter username" />
-        </div>
-        <div className="form-group mt-3">
+          <Input {...username.fields} />
+        </LabelInputWrapper>
+        <LabelInputWrapper>
           <label>Password</label>
-          <Input {...password.fields} placeholder="Enter password" />
-        </div>
-        <div className="form-group mt-3">
+          <Input {...password.fields} />
+        </LabelInputWrapper>
+        <LabelInputWrapper>
           <label>Password again</label>
-          <Input {...passwordAgain.fields} placeholder="Enter password again" />
-        </div>
-        <div className="d-grid gap-2 mt-3">
-          <Button type="submit" className="btn btn-primary">
-            Sign Up
-          </Button>
-        </div>
-      </form>
-    </div>
+          <Input {...passwordAgain.fields} />
+        </LabelInputWrapper>
+        <Button type="submit" disabled={buttonDisabled}>
+          Sign Up
+        </Button>
+      </StyledForm>
+    </BoxContent>
   );
 };
 

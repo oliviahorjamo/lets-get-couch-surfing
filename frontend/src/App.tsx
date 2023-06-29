@@ -7,16 +7,16 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import SignIn from "./pages/SignIn";
 import { useAppSelector } from "./hooks";
-import Theme from "./styles/Theme";
-import { Container } from "./styles";
+import { Theme } from "./styles/Theme";
+import { GlobalStyle } from "./styles";
 
-const App = () => {
+const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.user);
 
   // jos tää ajetaan aina niin käyttäjä tyhjennetään muistista aina kun päivitetään sivu
-  dispatch(clearUser())
+  //dispatch(clearUser())
 
   useEffect(() => {
     dispatch(initializeUsers());
@@ -24,19 +24,22 @@ const App = () => {
   }, [dispatch]);
 
   if (!user) {
-    return <SignIn />;
+    return (
+      <Theme>
+        <GlobalStyle />
+        <SignIn />
+      </Theme>
+    );
   }
 
   return (
     <Theme>
-      <Container>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-        </Routes>
-      </Container>
+      <GlobalStyle />
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
     </Theme>
-    
   );
 };
 
