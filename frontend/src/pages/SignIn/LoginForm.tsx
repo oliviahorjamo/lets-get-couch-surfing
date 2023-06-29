@@ -1,7 +1,5 @@
 import { Button, Input, StyledLink } from "../../styles";
-import loginService from "../../services/login";
 import { useAppDispatch, useField } from "../../hooks";
-import { UserOutputAttributes } from "../../types/users";
 import { logUserIn } from "../../reducers/userReducer";
 import {
   BoxContent,
@@ -9,6 +7,7 @@ import {
   StyledForm,
   StyledText,
 } from "./styles";
+import Notification from "../../components/Notification";
 
 interface Props {
   changeForm: () => void;
@@ -26,16 +25,11 @@ const LogInForm = ({ changeForm }: Props) => {
       username: username.fields.value,
       password: password.fields.value,
     };
-    loginService
-      .login(credentials)
-      .then((user: UserOutputAttributes) => {
-        dispatch(logUserIn(user));
-      })
-      .catch(() => {
-        // catch an error here
-        // notify with a notify component
-      });
+    dispatch(logUserIn(credentials));
   };
+
+  const fieldValues = [username.fields.value, password.fields.value];
+  const buttonDisabled = fieldValues.filter((v) => v.length === 0).length !== 0;
 
   return (
     <BoxContent>
@@ -53,7 +47,10 @@ const LogInForm = ({ changeForm }: Props) => {
           <label>Password</label>
           <Input {...password.fields} />
         </LabelInputWrapper>
-        <Button type="submit">Log In</Button>
+        <Notification />
+        <Button disabled={buttonDisabled} type="submit">
+          Log In
+        </Button>
       </StyledForm>
     </BoxContent>
   );

@@ -10,12 +10,13 @@ export const theme: DefaultTheme = {
     darkViolet: "#e2a0ee",
     darkBlue: "#2d5d85;",
     vanilla: "#f3ecdf",
+    failureNotification: "#ee8e8e",
   },
   fonts: ["Output"],
   fontSizes: {
-    small: "50px",
-    medium: "100px",
-    large: "120px",
+    small: "16px",
+    medium: "20px",
+    large: "24px",
   },
 };
 

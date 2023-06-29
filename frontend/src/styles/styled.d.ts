@@ -10,6 +10,7 @@ declare module "styled-components" {
       darkBlue: string;
       cream: string;
       vanilla: string;
+      failureNotification: string;
     };
     fonts: string[];
     fontSizes: {

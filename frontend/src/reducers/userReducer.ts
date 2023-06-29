@@ -3,6 +3,7 @@ import loginService from "../services/login";
 import storageService from "../services/storage";
 import { LoginCredentials, SignUpCredentials } from "../types/login";
 import { AppDispatch } from "../store";
+import { notify } from "./notificationReducer";
 
 const userSlice = createSlice({
   name: "user",
@@ -20,17 +21,20 @@ const userSlice = createSlice({
 export const logUserIn = (credentials: LoginCredentials) => {
   return async (dispatch: AppDispatch) => {
     try {
+      console.log("sending control to login service");
       const user = await loginService.login(credentials);
       storageService.saveUser(user);
       dispatch(setLoggedUser(user));
-      // here perhaps notification
     } catch (e) {
-      // here notifying notification
-      console.log("An error happened when logging the user in");
+      console.log("notifying in user reducer");
+      dispatch(
+        notify({
+          message: "Wrong username or password",
+          type: "failure",
+        })
+      );
     }
   };
-  // Here call the user service for logging the user in
-  // Then call the service for setting the user to local storage
 };
 
 export const signUpUser = (credentials: SignUpCredentials) => {
@@ -40,9 +44,12 @@ export const signUpUser = (credentials: SignUpCredentials) => {
       storageService.saveUser(user);
       dispatch(setLoggedUser(user));
     } catch (e) {
-      console.log("something went wrong with creating a new user");
-      // Here notify the user that something went wrong
-      // .e.g if the username is already taken
+      dispatch(
+        notify({
+          message: "Username is already taken",
+          type: "failure",
+        })
+      );
     }
   };
 };
@@ -56,10 +63,10 @@ export const initUser = () => {
 
 export const clearUser = () => {
   return async (dispatch: AppDispatch) => {
-    storageService.removeUser()
-    dispatch(removeLoggedUser(null))
-  }
-}
+    storageService.removeUser();
+    dispatch(removeLoggedUser(null));
+  };
+};
 
 export const { setLoggedUser, removeLoggedUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -7,9 +7,9 @@ import {
   BoxContent,
   LabelInputWrapper,
   StyledForm,
-  StyledLabel,
   StyledText,
 } from "./styles";
+import Notification from "../../components/Notification";
 
 interface Props {
   changeForm: () => void;
@@ -73,6 +73,7 @@ const SignUpForm = ({ changeForm }: Props) => {
           <label>Password again</label>
           <Input {...passwordAgain.fields} />
         </LabelInputWrapper>
+        <Notification />
         <Button type="submit" disabled={buttonDisabled}>
           Sign Up
         </Button>
