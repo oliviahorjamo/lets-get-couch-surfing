@@ -1,7 +1,5 @@
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector, useInitialization } from "./hooks";
 import { useEffect } from "react";
-import { initializeUsers } from "./reducers/usersReducer";
-import { initUser, clearUser } from "./reducers/userReducer";
 import Navigation from "./components/Navigation";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
@@ -11,15 +9,12 @@ import { GlobalStyle } from "./styles";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
+  const stateInitialiser = useInitialization()
 
   const user = useAppSelector((state) => state.user);
 
-  // jos tää ajetaan aina niin käyttäjä tyhjennetään muistista aina kun päivitetään sivu
-  //dispatch(clearUser());
-
   useEffect(() => {
-    dispatch(initializeUsers());
-    dispatch(initUser());
+    stateInitialiser()
   }, [dispatch]);
 
   if (!user) {

@@ -12,7 +12,7 @@ const userSlice = createSlice({
     setLoggedUser(state, action) {
       return action.payload;
     },
-    removeLoggedUser(state, action) {
+    removeLoggedUser() {
       return null;
     },
   },
@@ -64,7 +64,7 @@ export const initUser = () => {
 export const clearUser = () => {
   return async (dispatch: AppDispatch) => {
     storageService.removeUser();
-    dispatch(removeLoggedUser(null));
+    dispatch(removeLoggedUser());
   };
 };
 

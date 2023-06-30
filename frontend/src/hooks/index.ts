@@ -1,6 +1,8 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../store";
 import { useState } from "react";
+import { initializeUsers } from "../reducers/usersReducer";
+import { initUser } from "../reducers/userReducer";
 
 type fieldType = 'text' | 'password'
 
@@ -26,5 +28,14 @@ export const useField = (type: fieldType) => {
       value,
       onChange
     },
+  }
+}
+
+export const useInitialization = () => {
+  const dispatch: AppDispatch = useDispatch()
+
+  return ()  => {
+    dispatch(initializeUsers())
+    dispatch(initUser())
   }
 }
