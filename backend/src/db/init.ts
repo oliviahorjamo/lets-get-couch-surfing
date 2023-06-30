@@ -19,6 +19,7 @@ const initDb = async (): Promise<void> => {
 
 const syncTables = async () => {
   try {
+    console.log('syncing tables');
     await sequelizeConnection.sync({ alter: true });
   } catch (error) {
     logger.error("something went wrong with syncing the db");

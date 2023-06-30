@@ -7,6 +7,7 @@ import {
 import sequelizeConnection from '../config';
 import { UserAttributes, UserInputAttributes } from '../../types';
 import { ModelInterface } from '.';
+import FriendRequest from './friendRequest';
 
 class User extends Model<UserAttributes, UserInputAttributes>
   implements UserAttributes {
@@ -24,8 +25,11 @@ class User extends Model<UserAttributes, UserInputAttributes>
 
       User.belongsToMany(models.User, {
         as: 'Friends',
-        through: 'friends'
+        through: FriendRequest,
+        foreignKey: 'senderId',
+        otherKey: 'receiverId'
       });
+
     }
 }
 

@@ -16,6 +16,8 @@ interface PublicationAttributes {
   updatedAt?: Date
 }
 
+import { ModelInterface } from '.';
+
 export interface PublicationInput extends Optional<PublicationAttributes, 'id'>{}
 
 class Publication extends Model<PublicationAttributes, PublicationInput>
@@ -29,7 +31,7 @@ class Publication extends Model<PublicationAttributes, PublicationInput>
     updatedAt?: Date;
 
   
-  static associate(models: any) {
+  static associate(models: ModelInterface) {
     // define association here
     Publication.belongsTo(models.User,
       { foreignKey: 'createdBy' });

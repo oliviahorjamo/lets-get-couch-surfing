@@ -8,10 +8,6 @@ import helper from "./user_test_helper";
 
 const api = supertest(app);
 
-function assertResponseType<T>(response: any): T {
-  return response.body as T;
-}
-
 beforeAll(() => {
   initDb()
     .then(() => {
