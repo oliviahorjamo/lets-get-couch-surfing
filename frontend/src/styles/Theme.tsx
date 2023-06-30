@@ -11,6 +11,7 @@ export const theme: DefaultTheme = {
     darkBlue: "#2d5d85;",
     vanilla: "#f3ecdf",
     failureNotification: "#ee8e8e",
+    successNotification: "#8eeec1",
   },
   fonts: ["Output"],
   fontSizes: {

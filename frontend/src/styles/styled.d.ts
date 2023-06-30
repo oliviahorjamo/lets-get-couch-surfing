@@ -11,6 +11,7 @@ declare module "styled-components" {
       cream: string;
       vanilla: string;
       failureNotification: string;
+      successNotification: string;
     };
     fonts: string[];
     fontSizes: {
