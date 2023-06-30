@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
 
-const initialState = { message: null };
+const initialState = { message: null, type: null };
 
 interface messageType {
   message: string;
