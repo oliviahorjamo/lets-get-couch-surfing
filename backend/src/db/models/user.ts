@@ -8,6 +8,7 @@ import sequelizeConnection from '../config';
 import { UserAttributes, UserInputAttributes } from '../../types';
 import { ModelInterface } from '.';
 import FriendRequest from './friendRequest';
+import logger from '../../utils/logger';
 
 class User extends Model<UserAttributes, UserInputAttributes>
   implements UserAttributes {
@@ -29,7 +30,15 @@ class User extends Model<UserAttributes, UserInputAttributes>
         foreignKey: 'senderId',
         otherKey: 'receiverId'
       });
+    }
 
+    findAllFriendships() {
+      logger.info('finding all friendships of the given user');
+      // here the user should be either in receiver or sender and the status should be accepted
+    }
+
+    findEntireNetwork(depth: number) {
+      // find all friends of friends until the given depth
     }
 }
 

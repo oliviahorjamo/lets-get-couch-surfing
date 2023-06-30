@@ -4,14 +4,17 @@ import Publication from "./models/publication";
 import logger from "../utils/logger";
 import { users } from "../seeders/users";
 import { publications } from "../seeders/publications";
-import mapper from "../utils/mappers/users";
-import { UserInputAttributes } from "../types";
+import { friendRequests as requests } from "../seeders/friendRequests";
+import userMapper from "../utils/mappers/users";
+import { NewFriendRequest, UserInputAttributes } from "../types";
+import FriendRequest from "./models/friendRequest";
 
 const initDb = async (): Promise<void> => {
   try {
     await syncTables();
     await createUsers();
     await createPublications();
+    await createFriendRequests();
   } catch (error) {
     throw new Error("something went wrong with initializing db");
   }
@@ -27,10 +30,9 @@ const syncTables = async () => {
 };
 
 const createUsers = async () => {
-  console.log("starting to create users");
   try {
     for (const user of users) {
-      const newUser: UserInputAttributes = mapper.toNewUserEntry(user);
+      const newUser: UserInputAttributes = userMapper.toNewUserEntry(user);
       await User.findOrCreate({
         where: {
           username: newUser.username,
@@ -48,6 +50,29 @@ const createUsers = async () => {
       logger.error(error.message);
     }
     logger.error("something went wrong with creating users");
+  }
+};
+
+const createOneRequest = async (request: NewFriendRequest) => {
+  try {
+    console.log('creating request');
+    await FriendRequest.create(request);
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message);
+    }
+    logger.error('something went wrong with creating one friend request');
+  }
+};
+
+const createFriendRequests = async () => {
+  try {
+    console.log('creating all requests');
+    for (const request of requests) {
+      await createOneRequest(request);
+    }
+  } catch (error) {
+    logger.error('something went wrong with creating all friend requests');
   }
 };
 

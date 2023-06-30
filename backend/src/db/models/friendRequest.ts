@@ -2,7 +2,8 @@
 import {
   Model,
   UUIDV4,
-  DataTypes
+  DataTypes,
+  Op
 } from 'sequelize';
 import sequelizeConnection from '../config';
 import { FriendRequestAttributes, NewFriendRequest } from '../../types';
@@ -17,16 +18,28 @@ class FriendRequest extends Model<FriendRequestAttributes, NewFriendRequest>
     status!: 'pending' | 'created';
 
     /*
-    static associate(models: ModelInterface) {
-      FriendRequest.hasMany(models.User, {
-        foreignKey: 'senderId',
-      });
 
-      FriendRequest.hasMany(models.User, {
-        otherKey: 'receiverId',
+    public static validateUniqueCombination = async function(instance) {
+      const existingRequest = await FriendRequest.findOne({
+        where: {
+          [Op.or]: [
+            {
+              receiverId: instance.receiverId,
+              senderId: instance.senderId
+            },
+            {
+              receiverId: instance.senderId,
+              senderId: instance.receiverId
+            }
+          ]
+        }
       });
+    
+      if (existingRequest) {
+        throw new Error('Friend request already exists.');
+      }
+    };
 
-    }
     */
 }
 
@@ -62,7 +75,31 @@ FriendRequest.init({
   sequelize: sequelizeConnection,
   modelName: 'FriendRequest',
   timestamps: true,
-  updatedAt: false
+  updatedAt: false,
+  
+});
+
+
+FriendRequest.addHook('beforeValidate', 'uniqueCombination', async (instance: FriendRequest) => {
+  const existingRequests = await FriendRequest.findAll({
+    where: {
+      [Op.or]: [
+        {
+          receiverId: instance.receiverId,
+          senderId: instance.senderId
+        },
+        {
+          receiverId: instance.senderId,
+          senderId: instance.receiverId
+        }
+      ]
+    }
+  });
+
+
+  if (existingRequests.length > 0) {
+    throw new Error('Friend request already exists.');
+  }
 });
 
 export default FriendRequest;
