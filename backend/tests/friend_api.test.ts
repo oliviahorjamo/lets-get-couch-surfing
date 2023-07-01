@@ -34,8 +34,7 @@ describe("sending friend requests", () => {
       receiverId: usersInDb[1].id,
     };
     const response = await api.post("/api/friends/requests/").send(newRequest);
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(newRequest);
+    expect(response.status).toBe(201);
   });
 
   test("a valid friend request is added to db through route", async () => {
@@ -47,7 +46,7 @@ describe("sending friend requests", () => {
     };
     await api.post("/api/friends/requests").send(newRequest);
     const requestsInEnd = await requestHelper.requestsInDb();
-    // For osme reason the requestsInEnd object doesn't have a toHaveLength -method
+    expect(requestsInEnd).toHaveLength(friendRequestsInBeginning.length + 1);
   });
 });
 

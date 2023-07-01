@@ -1,11 +1,18 @@
 import { RequestHandler, Request, Response } from "express";
 import requestMapper from "../utils/mappers/friendRequests";
+import * as friendRequestDal from "../db/dal/friends";
 
 export const createNewRequest: RequestHandler = (
   req: Request,
   res: Response
 ) => {
-  const friendRequest = requestMapper.toNewRequestEntry(req.body);
-  console.log("friend request given", friendRequest);
-  res.send(friendRequest);
+  const friendRequestToCreate = requestMapper.toNewRequestEntry(req.body);
+  friendRequestDal
+    .addNewRequest(friendRequestToCreate)
+    .then((record) => {
+      return res.status(201).json(record);
+    })
+    .catch((e: Error) => {
+      return res.status(500).json(e.message);
+    });
 };

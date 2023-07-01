@@ -3,14 +3,14 @@ import { UserInputAttributes, UserOutputAttributes } from "../src/types";
 import mapper from "../src/utils/mappers/users";
 import { users } from "../src/seeders/users";
 
-const initialUsers: UserInputAttributes[] = users.map(
-  u => mapper.toNewUserEntry(u)
+const initialUsers: UserInputAttributes[] = users.map((u) =>
+  mapper.toNewUserEntry(u)
 );
 
 const newUser: UserInputAttributes = {
   name: "Tester 3",
   username: "testuser3",
-  password: "secret"
+  password: "secret",
 };
 
 /*
@@ -30,9 +30,9 @@ const nonExistingId = async () => {
 
 const usersInDb = async (): Promise<UserOutputAttributes[]> => {
   const users = await User.findAll({});
-  const stringifiedUsers = users.map(user => JSON.stringify(user));
-  const jsonUsers = stringifiedUsers.map(user => JSON.parse(user));
+  const stringifiedUsers = users.map((user) => JSON.stringify(user));
+  const jsonUsers = stringifiedUsers.map((user) => JSON.parse(user));
   return jsonUsers;
 };
 
-export default { initialUsers, newUser, usersInDb};
+export default { initialUsers, newUser, usersInDb };
