@@ -4,7 +4,6 @@ import Publication from "./models/publication";
 import logger from "../utils/logger";
 import { users } from "../seeders/users";
 import { publications } from "../seeders/publications";
-import { friendRequests as requests } from "../seeders/friendRequests";
 import userMapper from "../utils/mappers/users";
 import { NewFriendRequest, UserInputAttributes } from "../types";
 import FriendRequest from "./models/friendRequest";
@@ -22,7 +21,7 @@ const initDb = async (): Promise<void> => {
 
 const syncTables = async () => {
   try {
-    console.log('syncing tables');
+    console.log("syncing tables");
     await sequelizeConnection.sync({ alter: true });
   } catch (error) {
     logger.error("something went wrong with syncing the db");
@@ -55,24 +54,40 @@ const createUsers = async () => {
 
 const createOneRequest = async (request: NewFriendRequest) => {
   try {
-    console.log('creating request');
+    console.log("creating request");
     await FriendRequest.create(request);
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message);
     }
-    logger.error('something went wrong with creating one friend request');
+    logger.error("something went wrong with creating one friend request");
   }
+};
+
+const createRequestObjectsForExistingUsers = async () => {
+  const usersInDb = await User.findAll();
+  if (usersInDb.length > 1) {
+    const requests = [
+      {
+        senderId: usersInDb[0].id,
+        receiverId: usersInDb[1].id,
+      },
+    ];
+    return requests;
+  }
+  return null;
 };
 
 const createFriendRequests = async () => {
   try {
-    console.log('creating all requests');
-    for (const request of requests) {
-      await createOneRequest(request);
+    const requests = await createRequestObjectsForExistingUsers();
+    if (requests) {
+      for (const request of requests) {
+        await createOneRequest(request);
+      }
     }
   } catch (error) {
-    logger.error('something went wrong with creating all friend requests');
+    logger.error("something went wrong with creating all friend requests");
   }
 };
 
