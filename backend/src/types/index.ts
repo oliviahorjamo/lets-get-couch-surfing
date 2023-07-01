@@ -4,22 +4,33 @@ export interface LoginCredentials {
 }
 
 export interface UserAttributes {
-  id: string,
-  name: string,
-  username: string,
-  password: string,
-  createdAt?: Date,
-  updatedAt?: Date
+  id: string;
+  name: string;
+  username: string;
+  password: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface FriendRequestAttributes {
-  id: string,
-  senderId: string,
-  receiverId: string,
-  createdAt?: Date,
-  status: 'pending' | 'created'
+  id: string;
+  senderId: string;
+  receiverId: string;
+  createdAt?: Date;
+  status: Status;
 }
 
-export type UserInputAttributes = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+export enum Status {
+  Pending = "pending",
+  Accepted = "accepted",
+}
+
+export type UserInputAttributes = Omit<
+  UserAttributes,
+  "id" | "createdAt" | "updatedAt"
+>;
 export type UserOutputAttributes = Required<UserAttributes>;
-export type NewFriendRequest = Omit<FriendRequestAttributes, 'id' | 'createdAt' | 'status'>;
+export type NewFriendRequest = Omit<
+  FriendRequestAttributes,
+  "id" | "createdAt" | "status"
+>;
