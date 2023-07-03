@@ -50,6 +50,22 @@ describe("sending friend requests", () => {
   });
 });
 
+describe("finding the friends of a user", () => {
+  test("all pending requests received by the user can be found", async () => {
+    const usersInDb = await userHelper.usersInDb();
+    const user = usersInDb[0];
+    // find the friend requests of this one user
+    const newRequest = {
+      senderId: usersInDb[1].id,
+      receiverId: usersInDb[0].id,
+    };
+    await api.post("/api/friends/requests").send(newRequest);
+    const response = await api.get(`/api/friends/requests/received/pending/${user.id}`);
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(1);
+  });
+});
+
 afterAll(async () => {
   await sequelizeConnection.close();
 });

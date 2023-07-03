@@ -1,9 +1,6 @@
 import { UserInputAttributes, UserOutputAttributes } from "../../types";
 import { getErrorMessage } from "../../utils/errorMessages";
-import FriendRequest from "../models/friendRequest";
 import User from "../models/user";
-import { Op } from "sequelize";
-import { Status } from "../../types";
 
 export const getById = async (id: string): Promise<UserOutputAttributes> => {
   const user = await User.findByPk(id);
@@ -40,7 +37,7 @@ export const createNew = async (
   }
 };
 
-export const getAllReceivedPendingRequests = async (userId: string): Promise<UserOutputAttributes[]> => {
+export const getAllUsersWhoHaveRequestedFriendship = async (userId: string): Promise<UserOutputAttributes[]> => {
   try {
     const user = await User.findByPk(userId);
     console.log('getting the requests sent to', user);

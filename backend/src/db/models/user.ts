@@ -7,7 +7,6 @@ import {
 } from 'sequelize';
 import sequelizeConnection from '../config';
 import { UserAttributes, UserInputAttributes } from '../../types';
-import { ModelInterface } from '.';
 import FriendRequest from './friendRequest';
 
 class User extends Model<UserAttributes, UserInputAttributes> implements UserAttributes {
@@ -22,18 +21,18 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
       User.belongsToMany(User, {
         as: 'receivers',
         through: FriendRequest,
-        foreignKey: 'receiverId'
+        foreignKey: 'senderId' // The id of this user should be found in senderId field of all receivers' friend requests
       });
 
       User.belongsToMany(User, {
         as: 'senders',
         through: FriendRequest,
-        foreignKey: 'senderId'
+        foreignKey: 'receId'
       });
     }
 
-    getReceivers!: HasManyGetAssociationsMixin<User>;
     getSenders!: HasManyGetAssociationsMixin<User>;
+    getReceivers!: HasManyGetAssociationsMixin<User>;
 }
 
 User.init({
