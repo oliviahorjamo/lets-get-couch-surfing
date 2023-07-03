@@ -32,7 +32,7 @@ const toFriendRequest = (object: unknown): FriendRequestAttributes => {
       senderId: parser.parseUuid(object.senderId),
       receiverId: parser.parseUuid(object.receiverId),
       createdAt: parser.parseDate(object.createdAt),
-      id: parser.parseUuid(object.id),
+      id: parser.parseNumber(object.id),
       status: parser.parseStatus(object.status),
     };
     return requestEntry;

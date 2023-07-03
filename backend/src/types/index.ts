@@ -11,9 +11,12 @@ export interface UserAttributes {
   createdAt?: Date;
   updatedAt?: Date;
 }
+// Here I was wondering if I should add receivers and senders
+// to the model but at least in this example https://dev.to/jctaveras/sequelize-typescript-what-you-need-to-know-41mj
+// the author type doesn't have a list of books
 
 export interface FriendRequestAttributes {
-  id: string;
+  id: number;
   senderId: string;
   receiverId: string;
   createdAt?: Date;

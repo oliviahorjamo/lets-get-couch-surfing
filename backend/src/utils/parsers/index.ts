@@ -23,6 +23,17 @@ const isStatus = (status: string): status is Status => {
     .includes(status);
 };
 
+const isNumber = (number: unknown): number is number => {
+  return typeof number === 'number' || number instanceof Number;
+};
+
+const parseNumber = (number: unknown): number => {
+  if (!number || !isNumber(number)) {
+    throw new Error("Incorrect or missing number");
+  }
+  return number;
+};
+
 const parseUserName = (username: unknown): string => {
   if (!username || !isString(username)) {
     throw new Error("Incorrct or missing username");
@@ -72,4 +83,5 @@ export default {
   parseUserName,
   parseUuid,
   parseStatus,
+  parseNumber
 };
