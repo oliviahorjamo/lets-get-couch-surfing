@@ -2,16 +2,15 @@
 import {
   Model,
   UUIDV4,
-  DataTypes
+  DataTypes,
+  HasManyGetAssociationsMixin
 } from 'sequelize';
 import sequelizeConnection from '../config';
 import { UserAttributes, UserInputAttributes } from '../../types';
 import { ModelInterface } from '.';
 import FriendRequest from './friendRequest';
-import logger from '../../utils/logger';
 
-class User extends Model<UserAttributes, UserInputAttributes>
-  implements UserAttributes {
+class User extends Model<UserAttributes, UserInputAttributes> implements UserAttributes {
     id!: string;
     name!: string;
     username!: string;
@@ -19,27 +18,22 @@ class User extends Model<UserAttributes, UserInputAttributes>
     createdAt!: Date;
     updatedAt!: Date;
 
-    static associate(models: ModelInterface) {
-      User.hasMany(models.Publication, {
-        foreignKey: 'createdBy'
-      });
-
-      User.belongsToMany(models.User, {
-        as: 'Friends',
+    static associate() {
+      User.belongsToMany(User, {
+        as: 'receivers',
         through: FriendRequest,
-        foreignKey: 'senderId',
-        otherKey: 'receiverId'
+        foreignKey: 'receiverId'
+      });
+
+      User.belongsToMany(User, {
+        as: 'senders',
+        through: FriendRequest,
+        foreignKey: 'senderId'
       });
     }
 
-    findAllFriendships() {
-      logger.info('finding all friendships of the given user');
-      // here the user should be either in receiver or sender and the status should be accepted
-    }
-
-    findEntireNetwork(depth: number) {
-      // find all friends of friends until the given depth
-    }
+    getReceivers!: HasManyGetAssociationsMixin<User>;
+    getSenders!: HasManyGetAssociationsMixin<User>;
 }
 
 User.init({
@@ -67,5 +61,7 @@ User.init({
   modelName: 'User',
   timestamps: true
 });
+
+User.associate();
 
 export default User;

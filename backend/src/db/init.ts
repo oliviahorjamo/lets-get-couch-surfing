@@ -8,6 +8,7 @@ import userMapper from "../utils/mappers/users";
 import { NewFriendRequest, UserInputAttributes } from "../types";
 import FriendRequest from "./models/friendRequest";
 
+
 const initDb = async (): Promise<void> => {
   try {
     await syncTables();
@@ -18,6 +19,7 @@ const initDb = async (): Promise<void> => {
     throw new Error("something went wrong with initializing db");
   }
 };
+
 
 const syncTables = async () => {
   try {

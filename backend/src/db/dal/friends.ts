@@ -1,5 +1,6 @@
 import { FriendRequestAttributes, NewFriendRequest } from "../../types";
 import FriendRequest from "../models/friendRequest";
+import { getErrorMessage } from "../../utils/errorMessages";
 
 export const addNewRequest = async (
   request: NewFriendRequest
@@ -8,10 +9,6 @@ export const addNewRequest = async (
     const newRequest = await FriendRequest.create(request);
     return newRequest;
   } catch (error: unknown) {
-    let errorMessage = "Something went wrong";
-    if (error instanceof Error) {
-      errorMessage += "Error: " + error.message;
-    }
-    throw new Error(errorMessage);
+    throw new Error(getErrorMessage(error));
   }
 };
