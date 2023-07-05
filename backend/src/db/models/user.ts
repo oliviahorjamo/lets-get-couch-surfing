@@ -8,6 +8,7 @@ import {
 import sequelizeConnection from '../config';
 import { UserAttributes, UserInputAttributes } from '../../types';
 import FriendRequest from './friendRequest';
+import Publication from './publication';
 
 class User extends Model<UserAttributes, UserInputAttributes> implements UserAttributes {
     id!: string;
@@ -28,6 +29,11 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
         as: 'senders',
         through: FriendRequest,
         foreignKey: 'receiverId'
+      });
+
+      User.hasMany(Publication, {
+        as: 'publications',
+        foreignKey: 'createdBy'
       });
 
       // näistä ei oo hyötyä koska ei include vaatis edelleen kummatkin aliakset

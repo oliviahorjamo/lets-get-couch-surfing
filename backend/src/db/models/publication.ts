@@ -1,41 +1,31 @@
 'use strict';
 import {
   Model,
-  Optional,
   DataTypes
 } from 'sequelize';
 
 import sequelizeConnection from '../config';
+import { PublicationAttributes, PublicationInputAttributes } from '../../types';
+import User from './user';
 
-interface PublicationAttributes {
-  id: number,
-  createdBy: String,
-  title: String,
-  message: String,
-  createdAt?: Date,
-  updatedAt?: Date
-}
 
-import { ModelInterface } from '.';
-
-export interface PublicationInput extends Optional<PublicationAttributes, 'id'>{}
-
-class Publication extends Model<PublicationAttributes, PublicationInput>
+class Publication extends Model<PublicationAttributes, PublicationInputAttributes>
   implements PublicationAttributes {
   
     id!: number;
     createdBy!: string;
     title!: string;
     message!: String;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdA!: Date;
+    updatedAt!: Date;
 
-  
-  static associate(models: ModelInterface) {
+  /*
+  static associate() {
     // define association here
-    Publication.belongsTo(models.User,
+    Publication.belongsTo(User,
       { foreignKey: 'createdBy' });
   }
+  */
 }
 
 Publication.init({
@@ -65,5 +55,7 @@ Publication.init({
   modelName: 'Publication',
   timestamps: true
 });
+
+//Publication.associate();
 
 export default Publication;

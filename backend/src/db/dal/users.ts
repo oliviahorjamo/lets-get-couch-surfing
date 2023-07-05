@@ -1,6 +1,9 @@
 import { UserInputAttributes, UserOutputAttributes } from "../../types";
 import { getErrorMessage } from "../../utils/errorMessages";
 import User from "../models/user";
+import sequelizeConnection from "../config";
+import { QueryTypes } from "sequelize";
+import mapper from '../../utils/mappers/users';
 
 export const getById = async (id: string): Promise<UserOutputAttributes> => {
   const user = await User.findByPk(id);
@@ -53,26 +56,27 @@ export const getAllPendingRequests = async (userId: string): Promise<UserOutputA
   }
 };
 
-const getFriends = async (user: User): Promise<UserOutputAttributes[]> => {
+const getSendersAndReceiversAccepted = async (user: User): Promise<UserOutputAttributes[]> => {
   const senders = await user.getSenders({where: {
     '$FriendRequest.status$': 'accepted'
-    }
+    },
+    include: ['publications']
   });
   const receivers = await user.getReceivers({where: {
-    '$FriendRequest.status$': 'accepted'
-  }});
+    '$FriendRequest.status$': 'accepted',
+  },
+    include: ['publications']
+  });
   const friends = [...senders, ...receivers];
   return friends;
   
 };
 
-export const getAllFriends = async (userId: string): Promise<UserInputAttributes[]> => {
+export const getAllFriends = async (userId: string): Promise<UserOutputAttributes[]> => {
   try {
     const user = await User.findByPk(userId);
     if (user) {
-      // the two queries are needed because there is no connection between
-      // FriendRequests and Users with both primary keys
-      const friends = await getFriends(user);
+      const friends = await getSendersAndReceiversAccepted(user);
       return friends;
     }
     throw new Error('No user found with this id');
@@ -80,3 +84,24 @@ export const getAllFriends = async (userId: string): Promise<UserInputAttributes
     throw new Error(getErrorMessage(error));
   }
 };
+
+export const getEntireNetwork = async (userId: string, depth: number): Promise<UserOutputAttributes[]> => {
+  // This query currently works, the next step is to find all friends of friends hierarchically
+  // Note that currently you return the friend requests, not the users as expected
+  const query = `
+    SELECT
+      *
+    FROM
+      "FriendRequests"
+    WHERE
+      "receiverId" = ?
+    OR
+      "senderId" = ?
+  `;
+  const friends = await sequelizeConnection.query(query, { type: QueryTypes.SELECT, replacements: [userId, userId] });
+  console.log('friends returned', friends);
+  const mappedFriends = friends.map(f => mapper.toUserEntry(f));
+  return mappedFriends;
+};
+
+// The hierarchical query needed

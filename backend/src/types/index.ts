@@ -37,3 +37,20 @@ export type NewFriendRequest = Omit<
   FriendRequestAttributes,
   "id" | "createdAt" | "status"
 >;
+
+
+export interface PublicationAttributes {
+  id: number,
+  createdBy: String,
+  title: String,
+  message: String,
+  createdAt?: Date,
+  updatedAt?: Date
+}
+
+export type PublicationInputAttributes = Omit<
+  PublicationAttributes,
+  "id" | "createdAt" | "updatedAt"
+>;
+
+export type PublicationOutputAttributes = Required<PublicationAttributes>;
