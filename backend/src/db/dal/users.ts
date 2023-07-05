@@ -11,8 +11,6 @@ export const getById = async (id: string): Promise<UserOutputAttributes> => {
   return user;
 };
 
-// tästä ois helppo tehä offline versio joka vaan palauttais kovakoodatut käyttäjät
-
 export const getAll = async (): Promise<UserOutputAttributes[]> => {
   const users = await User.findAll({ where: {} });
   if (!users) {
@@ -55,22 +53,26 @@ export const getAllPendingRequests = async (userId: string): Promise<UserOutputA
   }
 };
 
+const getFriends = async (user: User): Promise<UserOutputAttributes[]> => {
+  const senders = await user.getSenders({where: {
+    '$FriendRequest.status$': 'accepted'
+    }
+  });
+  const receivers = await user.getReceivers({where: {
+    '$FriendRequest.status$': 'accepted'
+  }});
+  const friends = [...senders, ...receivers];
+  return friends;
+  
+};
 
 export const getAllFriends = async (userId: string): Promise<UserInputAttributes[]> => {
   try {
     const user = await User.findByPk(userId);
-    console.log('user found', user);
     if (user) {
       // the two queries are needed because there is no connection between
       // FriendRequests and Users with both primary keys
-      const senders = await user.getSenders({where: {
-        '$FriendRequest.status$': 'accepted'
-        }
-      });
-      const receivers = await user.getReceivers({where: {
-        '$FriendRequest.status$': 'accepted'
-      }});const friends = [...senders, ...receivers];
-      console.log('friends', friends);
+      const friends = await getFriends(user);
       return friends;
     }
     throw new Error('No user found with this id');

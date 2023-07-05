@@ -30,8 +30,8 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
         foreignKey: 'receiverId'
       });
 
-      // nää on sinänsä turhia koska vaan aiheuttaa sen että userdalissa tai friendrequest dalissa
-      // pitää käsitellä kummankin taulun tietoa
+      // näistä ei oo hyötyä koska ei include vaatis edelleen kummatkin aliakset
+      
       /*
       User.hasMany(FriendRequest, {
         as: 'receivedRequests',

@@ -11,3 +11,6 @@ get http://localhost:3001/api/friends/requests/received/pending/a939db0f-7f84-4e
 
 ###
 get http://localhost:3001/api/friends/dcb07b07-6307-4699-812f-147b4b51cb38
+
+###
+put http://localhost:3001/api/friends/requests/1

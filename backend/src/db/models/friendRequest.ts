@@ -71,7 +71,7 @@ FriendRequest.init(
 );
 
 FriendRequest.addHook(
-  "beforeValidate",
+  "beforeCreate",
   "uniqueCombination",
   async (instance: FriendRequest) => {
     const existingRequests = await FriendRequest.findAll({

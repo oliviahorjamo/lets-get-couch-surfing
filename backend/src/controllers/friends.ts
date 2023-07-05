@@ -41,3 +41,15 @@ export const getAllFriends: RequestHandler = (req: Request, res: Response) => {
       return res.status(500).json(e.message);
     });
 };
+
+export const acceptRequest: RequestHandler = (req: Request, res: Response) => {
+  const requestId = Number(req.params.id);
+  friendRequestDal
+    .acceptRequest(requestId)
+    .then((record) => {
+      return res.status(201).json(record);
+    })
+    .catch((e: Error) => {
+      return res.status(500).json(e.message);
+    });
+};
