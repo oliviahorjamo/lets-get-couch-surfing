@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "senderId": "dcb07b07-6307-4699-812f-147b4b51cb38",
-  "receiverId": "a939db0f-7f84-4e89-80a7-8032a6faceac"
+  "receiverId": "d7ee6d66-30aa-42be-9249-8f9959a471ff"
 }
 
 ###

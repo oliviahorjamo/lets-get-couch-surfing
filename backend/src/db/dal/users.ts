@@ -37,16 +37,16 @@ export const createNew = async (
   }
 };
 
-export const getAllUsersWhoHaveRequestedFriendship = async (userId: string): Promise<UserOutputAttributes[]> => {
+export const getAllPendingRequests = async (userId: string): Promise<UserOutputAttributes[]> => {
   try {
     const user = await User.findByPk(userId);
     console.log('getting the requests sent to', user);
     if (user) {
-      // NOTE THAT THIS STILL DOESN'T CARE ABOUT THE STATUS OF THE REQUEST
-      const senders = await user.getSenders();
-      console.log('got the senders', senders);
-      const receivers = await user.getReceivers();
-      console.log('request sent by this user', receivers);
+      const senders = await user.getSenders({
+        where: {
+          '$FriendRequest.status$' : 'pending'
+        }
+      });
       return senders;
     }
     throw new Error('Now user found with this id');

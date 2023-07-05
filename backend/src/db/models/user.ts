@@ -27,7 +27,7 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
       User.belongsToMany(User, {
         as: 'senders',
         through: FriendRequest,
-        foreignKey: 'receId'
+        foreignKey: 'receiverId'
       });
     }
 

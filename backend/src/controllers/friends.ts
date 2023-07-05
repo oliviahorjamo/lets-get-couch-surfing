@@ -21,7 +21,7 @@ export const createNewRequest: RequestHandler = (
 export const getAllReceivedPendingRequests: RequestHandler = (req: Request, res: Response) => {
   const userId = req.params.id;
   console.log('getting the pending requests sent to', userId);
-  userDal.getAllUsersWhoHaveRequestedFriendship(userId)
+  userDal.getAllPendingRequests(userId)
     .then(records => {
       return res.status(200).json(records);
     })
