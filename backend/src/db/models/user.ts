@@ -29,6 +29,21 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
         through: FriendRequest,
         foreignKey: 'receiverId'
       });
+
+      // nää on sinänsä turhia koska vaan aiheuttaa sen että userdalissa tai friendrequest dalissa
+      // pitää käsitellä kummankin taulun tietoa
+      /*
+      User.hasMany(FriendRequest, {
+        as: 'receivedRequests',
+        foreignKey: 'receiverId',
+      });
+
+      User.hasMany(FriendRequest, {
+        as: 'sentRequests',
+        foreignKey: 'senderId'
+      });
+      */
+
     }
 
     getSenders!: HasManyGetAssociationsMixin<User>;

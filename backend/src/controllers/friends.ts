@@ -29,3 +29,15 @@ export const getAllReceivedPendingRequests: RequestHandler = (req: Request, res:
       return res.status(500).json(e.message);
     });
 };
+
+export const getAllFriends: RequestHandler = (req: Request, res: Response) => {
+  const userId = req.params.id;
+  console.log('getting all friends of', userId);
+  userDal.getAllFriends(userId)
+    .then(records => {
+      return res.status(200).json(records);
+    })
+    .catch((e: Error) => {
+      return res.status(500).json(e.message);
+    });
+};

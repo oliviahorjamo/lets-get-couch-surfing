@@ -3,6 +3,7 @@ import { Model, DataTypes, Op } from "sequelize";
 import sequelizeConnection from "../config";
 import { FriendRequestAttributes, NewFriendRequest, Status } from "../../types";
 //import { ModelInterface } from '.';
+//import User from './user';
 
 class FriendRequest
   extends Model<FriendRequestAttributes, NewFriendRequest>
@@ -14,13 +15,22 @@ class FriendRequest
   createdAt!: Date;
   status!: Status;
 
+  
+  // Currently not needed for anything
   /*
-  static associate(models: ModelInterface) {
-    FriendRequest.belongsTo(models.User, {
-      foreignKey: 'id',
+  static associate() {
+    FriendRequest.belongsTo(User, {
+      as: 'sender',
+      foreignKey: 'senderId'
+    });
+
+    FriendRequest.belongsTo(User, {
+      as: 'receiver',
+      foreignKey: 'receiverId'
     });
   }
   */
+  
 }
 
 FriendRequest.init(

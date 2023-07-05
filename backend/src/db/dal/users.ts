@@ -54,3 +54,27 @@ export const getAllPendingRequests = async (userId: string): Promise<UserOutputA
     throw new Error(getErrorMessage(error));
   }
 };
+
+
+export const getAllFriends = async (userId: string): Promise<UserInputAttributes[]> => {
+  try {
+    const user = await User.findByPk(userId);
+    console.log('user found', user);
+    if (user) {
+      // the two queries are needed because there is no connection between
+      // FriendRequests and Users with both primary keys
+      const senders = await user.getSenders({where: {
+        '$FriendRequest.status$': 'accepted'
+        }
+      });
+      const receivers = await user.getReceivers({where: {
+        '$FriendRequest.status$': 'accepted'
+      }});const friends = [...senders, ...receivers];
+      console.log('friends', friends);
+      return friends;
+    }
+    throw new Error('No user found with this id');
+  } catch (error: unknown) {
+    throw new Error(getErrorMessage(error));
+  }
+};

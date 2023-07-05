@@ -1,6 +1,7 @@
 import { FriendRequestAttributes, NewFriendRequest } from "../../types";
 import FriendRequest from "../models/friendRequest";
 import { getErrorMessage } from "../../utils/errorMessages";
+//import { UserAttributes } from "../../types";
 
 export const addNewRequest = async (
   request: NewFriendRequest
