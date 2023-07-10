@@ -5,7 +5,7 @@ import { clearUser } from "../reducers/userReducer";
 import { useAppDispatch } from "../hooks";
 
 const NavigationStyle = styled.div`
-  background: BurlyWood;
+  background: ${props => props.theme.colors.lightViolet};
   padding: 1em;
 `
 

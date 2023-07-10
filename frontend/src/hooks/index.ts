@@ -3,6 +3,8 @@ import type { RootState, AppDispatch } from "../store";
 import { useState } from "react";
 import { initializeUsers } from "../reducers/usersReducer";
 import { initUser } from "../reducers/userReducer";
+import { initializeFriends } from "../reducers/friendReducer";
+import { initializePublicationsOfFriends } from "../reducers/publicationReducer";
 
 type fieldType = 'text' | 'password'
 
@@ -37,5 +39,14 @@ export const useInitialization = () => {
   return ()  => {
     dispatch(initializeUsers())
     dispatch(initUser())
+  }
+}
+
+export const useInitializeFriendsAndPublications = () => {
+  const dispatch: AppDispatch = useDispatch()
+
+  return () => {
+    dispatch(initializeFriends())
+    dispatch(initializePublicationsOfFriends)
   }
 }

@@ -1,20 +1,30 @@
-import { useAppSelector } from "../../hooks";
+import { useAppSelector, useInitializeFriendsAndPublications, useAppDispatch } from "../../hooks";
+import { useEffect, useState } from "react";
+import MapOfFriends from "./MapOfFriends";
+import PublicationList from "./PublicationList";
 
 const Home = (): JSX.Element => {
-  const users = useAppSelector((state) => state.users);
+  const friends = useAppSelector((state) => state.friends)
+  const [selectedFriendId, selectFriend ] = useState(null)
 
-  if (!users) {
+  const dispatch = useAppDispatch();
+  const friendInitialiser = useInitializeFriendsAndPublications()
+
+  useEffect(() => {
+    friendInitialiser()
+  }, [dispatch]);
+  
+
+  console.log(friends)
+
+  if (!friends) {
     return <div></div>;
   }
 
   return (
     <div>
-      <h1>Users in this app</h1>
-      {users.map((u) => 
-      <li key={u.username}>
-        {u.username}
-      </li>
-      )}
+      <MapOfFriends selectedFriendId = {selectedFriendId}></MapOfFriends>
+      <PublicationList selectedFriendId={selectedFriendId}></PublicationList>
     </div>
   )
   
