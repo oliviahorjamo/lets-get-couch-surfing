@@ -9,6 +9,7 @@ import sequelizeConnection from '../config';
 import { UserAttributes, UserInputAttributes } from '../../types';
 import FriendRequest from './friendRequest';
 import Publication from './publication';
+import { Op } from 'sequelize';
 
 class User extends Model<UserAttributes, UserInputAttributes> implements UserAttributes {
     id!: string;
@@ -30,6 +31,21 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
         through: FriendRequest,
         foreignKey: 'receiverId'
       });
+
+      // Tää ei toimi, palauttaa edelleen vaan käyttäjät missä
+      // id senderId:na
+      User.belongsToMany(User, {
+        as: 'friends',
+        through: FriendRequest,
+        foreignKey: 'senderId',
+        scope: {
+          [Op.or]: [
+            { '$FriendRequest.senderId$': { [Op.col]: 'User.id' } },
+            { '$FriendRequest.receiverId$': { [Op.col]: 'User.id' } },
+          ],
+        },
+      });
+
 
       User.hasMany(Publication, {
         as: 'publications',
@@ -54,6 +70,8 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
 
     getSenders!: HasManyGetAssociationsMixin<User>;
     getReceivers!: HasManyGetAssociationsMixin<User>;
+    getFriends!: HasManyGetAssociationsMixin<User>;
+    getPublications!: HasManyGetAssociationsMixin<Publication>;
 }
 
 User.init({
@@ -83,5 +101,6 @@ User.init({
 });
 
 User.associate();
+
 
 export default User;

@@ -57,7 +57,7 @@ export const acceptRequest: RequestHandler = (req: Request, res: Response) => {
 export const getEntireNetwork: RequestHandler = (req: Request, res: Response) => {
   const userId = req.params.id;
   console.log('getting the entire network of', userId);
-  userDal.getEntireNetwork(userId, 1)
+  userDal.getFriendsOfFriends(userId)
     .then(records => {
       return res.status(200).json(records);
     })

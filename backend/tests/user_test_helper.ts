@@ -29,7 +29,7 @@ const nonExistingId = async () => {
 */
 
 const usersInDb = async (): Promise<UserOutputAttributes[]> => {
-  const users = await User.findAll({});
+  const users = await User.findAll({include: 'publications'});
   const stringifiedUsers = users.map((user) => JSON.stringify(user));
   const jsonUsers = stringifiedUsers.map((user) => JSON.parse(user));
   return jsonUsers;

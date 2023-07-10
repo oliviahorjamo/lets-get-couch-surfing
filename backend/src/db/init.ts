@@ -13,7 +13,7 @@ const initDb = async (): Promise<void> => {
   try {
     await syncTables();
     await createUsers();
-    await createPublications();
+   // await createPublications();
     await createFriendRequests();
   } catch (error) {
     throw new Error("something went wrong with initializing db");
