@@ -7,10 +7,20 @@ import { publications } from "../seeders/publications";
 import userMapper from "../utils/mappers/users";
 import { NewFriendRequest, UserInputAttributes } from "../types";
 import FriendRequest from "./models/friendRequest";
+import createAssociations from "./models/associations";
+
+
+export const models = {
+  user: User,
+  friendRequest: FriendRequest,
+  publication: Publication
+};
+
 
 
 const initDb = async (): Promise<void> => {
   try {
+    createAssociations();
     await syncTables();
     await createUsers();
    // await createPublications();

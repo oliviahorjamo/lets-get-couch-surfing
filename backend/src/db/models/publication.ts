@@ -6,7 +6,7 @@ import {
 
 import sequelizeConnection from '../config';
 import { PublicationAttributes, PublicationInputAttributes } from '../../types';
-import User from './user';
+
 
 
 class Publication extends Model<PublicationAttributes, PublicationInputAttributes>
@@ -19,13 +19,6 @@ class Publication extends Model<PublicationAttributes, PublicationInputAttribute
     createdA!: Date;
     updatedAt!: Date;
 
-  /*
-  static associate() {
-    // define association here
-    Publication.belongsTo(User,
-      { foreignKey: 'createdBy' });
-  }
-  */
 }
 
 Publication.init({
@@ -55,7 +48,5 @@ Publication.init({
   modelName: 'Publication',
   timestamps: true
 });
-
-//Publication.associate();
 
 export default Publication;

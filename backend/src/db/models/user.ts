@@ -7,9 +7,7 @@ import {
 } from 'sequelize';
 import sequelizeConnection from '../config';
 import { UserAttributes, UserInputAttributes } from '../../types';
-import FriendRequest from './friendRequest';
 import Publication from './publication';
-import { Op } from 'sequelize';
 
 class User extends Model<UserAttributes, UserInputAttributes> implements UserAttributes {
     id!: string;
@@ -18,55 +16,6 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
     password!: string;
     createdAt!: Date;
     updatedAt!: Date;
-
-    static associate() {
-      User.belongsToMany(User, {
-        as: 'receivers',
-        through: FriendRequest,
-        foreignKey: 'senderId' // The id of this user should be found in senderId field of all receivers' friend requests
-      });
-
-      User.belongsToMany(User, {
-        as: 'senders',
-        through: FriendRequest,
-        foreignKey: 'receiverId'
-      });
-
-      // Tää ei toimi, palauttaa edelleen vaan käyttäjät missä
-      // id senderId:na
-      User.belongsToMany(User, {
-        as: 'friends',
-        through: FriendRequest,
-        foreignKey: 'senderId',
-        scope: {
-          [Op.or]: [
-            { '$FriendRequest.senderId$': { [Op.col]: 'User.id' } },
-            { '$FriendRequest.receiverId$': { [Op.col]: 'User.id' } },
-          ],
-        },
-      });
-
-
-      User.hasMany(Publication, {
-        as: 'publications',
-        foreignKey: 'createdBy'
-      });
-
-      // näistä ei oo hyötyä koska ei include vaatis edelleen kummatkin aliakset
-      
-      /*
-      User.hasMany(FriendRequest, {
-        as: 'receivedRequests',
-        foreignKey: 'receiverId',
-      });
-
-      User.hasMany(FriendRequest, {
-        as: 'sentRequests',
-        foreignKey: 'senderId'
-      });
-      */
-
-    }
 
     getSenders!: HasManyGetAssociationsMixin<User>;
     getReceivers!: HasManyGetAssociationsMixin<User>;
@@ -99,8 +48,6 @@ User.init({
   modelName: 'User',
   timestamps: true
 });
-
-User.associate();
 
 
 export default User;

@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 initDb()
   .then(() => {
-    server.listen({ port: port}, () => {
+    server.listen({ port: port }, () => {
       logger.info(`Server running on port ${port}`);
     });
   }).catch(() => {
