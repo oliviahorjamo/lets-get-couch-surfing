@@ -3,7 +3,7 @@ import User from "./models/user";
 import Publication from "./models/publication";
 import logger from "../utils/logger";
 import { users } from "../seeders/users";
-import { publications } from "../seeders/publications";
+//import { publications } from "../seeders/publications";
 import userMapper from "../utils/mappers/users";
 import { NewFriendRequest, UserInputAttributes } from "../types";
 import FriendRequest from "./models/friendRequest";
@@ -103,6 +103,7 @@ const createFriendRequests = async () => {
   }
 };
 
+/*
 const createPublications = async () => {
   try {
     await Promise.all(
@@ -118,5 +119,6 @@ const createPublications = async () => {
     logger.error("something went wrong with creating publications");
   }
 };
+*/
 
 export default initDb;

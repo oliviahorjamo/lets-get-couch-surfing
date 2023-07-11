@@ -16,6 +16,8 @@ class User extends Model<UserAttributes, UserInputAttributes> implements UserAtt
     password!: string;
     createdAt!: Date;
     updatedAt!: Date;
+    lat!: null | number;
+    lon!: null | number;
 
     getSenders!: HasManyGetAssociationsMixin<User>;
     getReceivers!: HasManyGetAssociationsMixin<User>;
@@ -43,6 +45,16 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false
   },
+  lat: {
+    type: DataTypes.DECIMAL,
+    allowNull: true,
+    defaultValue: null
+  },
+  lon: {
+    type: DataTypes.DECIMAL,
+    allowNull: true,
+    defaultValue: null
+  }
 }, {
   sequelize: sequelizeConnection,
   modelName: 'User',

@@ -17,6 +17,7 @@ const isDate = (date: unknown): date is Date => {
   );
 };
 
+
 const isStatus = (status: string): status is Status => {
   return Object.values(Status)
     .map((v) => v.toString())
@@ -26,6 +27,7 @@ const isStatus = (status: string): status is Status => {
 const isNumber = (number: unknown): number is number => {
   return typeof number === 'number' || number instanceof Number;
 };
+
 
 const parseNumber = (number: unknown): number => {
   if (!number || !isNumber(number)) {
@@ -75,6 +77,14 @@ const parseStatus = (status: unknown): Status => {
   }
   return status;
 };
+
+/*
+const parselatLon = (latOrLon: unknown): number | null => {
+  if (!latOrLon || !isNull(latOrLon) || !isNumber(latOrLon)) {
+
+  }
+};
+*/
 
 export default {
   parseDate,

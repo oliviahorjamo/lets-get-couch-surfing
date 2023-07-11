@@ -10,7 +10,9 @@ export interface UserAttributes {
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
-  publications?: PublicationAttributes[]
+  publications?: PublicationAttributes[],
+  lat: number | null,
+  lon: number | null
 }
 // Here I was wondering if I should add receivers and senders
 // to the model but at least in this example https://dev.to/jctaveras/sequelize-typescript-what-you-need-to-know-41mj
@@ -28,9 +30,7 @@ export interface FriendRequestAttributes {
   status: Status;
 }
 
-export interface Friend extends OtherUserAttributes {
-  publications: PublicationAttributes[]
-}
+export type Friend = Omit<UserAttributes, 'password' | 'createdAt' | 'updatedAt'>;
 
 export enum Status {
   Pending = "pending",
@@ -39,7 +39,7 @@ export enum Status {
 
 export type UserInputAttributes = Omit<
   UserAttributes,
-  "id" | "createdAt" | "updatedAt" | "publications"
+  "id" | "createdAt" | "updatedAt" | "publications" | "lat" | "lon"
 >;
 
 export interface UserOutputAttributes extends Required<UserAttributes>{}
@@ -56,7 +56,9 @@ export interface PublicationAttributes {
   title: String,
   message: String,
   createdAt?: Date,
-  updatedAt?: Date
+  updatedAt?: Date,
+  lat: number,
+  lon: number
 }
 
 export type PublicationInputAttributes = Omit<
