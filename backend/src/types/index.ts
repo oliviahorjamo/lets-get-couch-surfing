@@ -19,8 +19,16 @@ export interface UserAttributes {
 // the author type doesn't have a list of books
 
 
-export interface OtherUserAttributes extends Pick<UserAttributes, 'id' | 'name' | 'username'>{}
+export interface OtherUserAttributes extends Pick<UserAttributes, 'id' | 'name' | 'username' | "lat" | "lon">{}
 
+/*
+export type LatLonCoordinates = {
+  lat: number | null,
+  lon: number | null
+};
+
+export type Coordinate = number;
+*/
 
 export interface FriendRequestAttributes {
   id: number;

@@ -18,6 +18,8 @@ class Publication extends Model<PublicationAttributes, PublicationInputAttribute
     message!: String;
     createdA!: Date;
     updatedAt!: Date;
+    lat!: number;
+    lon!: number;
 
 }
 
@@ -42,6 +44,14 @@ Publication.init({
   message: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  lat: {
+    type: DataTypes.DECIMAL,
+    allowNull: true
+  },
+  lon: {
+    type: DataTypes.DECIMAL,
+    allowNull: true
   }
 }, {
   sequelize: sequelizeConnection,

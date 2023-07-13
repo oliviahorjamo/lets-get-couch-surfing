@@ -28,6 +28,18 @@ const isNumber = (number: unknown): number is number => {
   return typeof number === 'number' || number instanceof Number;
 };
 
+const isCoordinate = (LatOrLon: unknown): LatOrLon is number => {
+  const minCoord = -90;
+  const maxCoord = 90;
+  if (isNumber(LatOrLon)) {
+    return inRange(LatOrLon, minCoord, maxCoord);
+  }
+  return false;
+};
+
+const inRange = (x: number, min: number, max: number): boolean => {
+  return ((x-min)*(x-max) <= 0);
+};
 
 const parseNumber = (number: unknown): number => {
   if (!number || !isNumber(number)) {
@@ -78,13 +90,18 @@ const parseStatus = (status: unknown): Status => {
   return status;
 };
 
-/*
-const parselatLon = (latOrLon: unknown): number | null => {
-  if (!latOrLon || !isNull(latOrLon) || !isNumber(latOrLon)) {
 
+const parseCoordinate = (coordinate: unknown): number | null => {
+  // This still returns coordinate only as a number and not as null even
+  // though also null value should be allowed
+  if (coordinate === undefined) {
+    throw new Error("Missing coordinate");
   }
+  if (coordinate !== null && !isCoordinate(coordinate)) {
+    throw new Error("Incorrect or missing coordinate");
+  }
+  return coordinate;
 };
-*/
 
 export default {
   parseDate,
@@ -93,5 +110,6 @@ export default {
   parseUserName,
   parseUuid,
   parseStatus,
-  parseNumber
+  parseNumber,
+  parseCoordinate
 };
