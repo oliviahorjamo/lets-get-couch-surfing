@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
+import { updateLocationCoordinates } from "../../reducers/userReducer";
 
 interface Props {
   selectedFriendId: string | null
@@ -6,7 +8,13 @@ interface Props {
 
 const MapOfFriends = ( { selectedFriendId }: Props ): JSX.Element => {
   const friends = useAppSelector((state) => state.friends)
-  console.log('currently selected friend', selectedFriendId)
+  const dispatch = useAppDispatch()
+
+  console.log('selected friend in map', selectedFriendId)
+
+  useEffect(() => {
+    dispatch(updateLocationCoordinates())
+  }, [dispatch])
 
   return (
     <div>

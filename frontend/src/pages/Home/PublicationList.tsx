@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../hooks";
-import { PublicationAttributes } from "../../types/users";
+import { PublicationAttributes } from "../../types/publications";
 
 interface Props {
   selectedFriendId: string | null
@@ -7,9 +7,8 @@ interface Props {
 
 const PublicationList = ( { selectedFriendId }: Props ): JSX.Element => {
   const friends = useAppSelector((state) => state.friends)
-  console.log('currently selected friend', selectedFriendId)
+  console.log('currently selected friend in publication list', selectedFriendId)
   const publicationLists = friends.map(f => f.publications)
-  console.log('publications', publicationLists)
 
   const publications = ([] as PublicationAttributes[]).concat(...publicationLists)
 

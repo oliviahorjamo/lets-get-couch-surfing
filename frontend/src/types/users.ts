@@ -1,18 +1,4 @@
-
-
-export interface PublicationAttributes {
-  id: number,
-  createdBy: string,
-  title: string,
-  message: string,
-  createdAt?: Date,
-  updatedAt?: Date
-}
-
-export interface LoginCredentials {
-  username: string;
-  password: string;
-}
+import { PublicationAttributes } from "./publications";
 
 export interface UserAttributes {
   id: string;
@@ -21,14 +7,16 @@ export interface UserAttributes {
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
-  publications?: PublicationAttributes[]
+  publications?: PublicationAttributes[],
+  lat: number | null,
+  lon: number | null
 }
 // Here I was wondering if I should add receivers and senders
 // to the model but at least in this example https://dev.to/jctaveras/sequelize-typescript-what-you-need-to-know-41mj
 // the author type doesn't have a list of books
 
 
-export interface OtherUserAttributes extends Pick<UserAttributes, 'id' | 'name' | 'username'>{}
+export interface OtherUserAttributes extends Pick<UserAttributes, 'id' | 'name' | 'username' | "lat" | "lon">{}
 
 
 export interface FriendRequestAttributes {
@@ -39,18 +27,18 @@ export interface FriendRequestAttributes {
   status: Status;
 }
 
-export interface Friend extends OtherUserAttributes {
-  publications: PublicationAttributes[]
-}
+
+export type Friend = Omit<UserAttributes, 'password' | 'createdAt' | 'updatedAt'>;
 
 export enum Status {
   Pending = "pending",
   Accepted = "accepted",
 }
 
+
 export type UserInputAttributes = Omit<
   UserAttributes,
-  "id" | "createdAt" | "updatedAt" | "publications"
+  "id" | "createdAt" | "updatedAt" | "publications" | "lat" | "lon"
 >;
 
 export interface UserOutputAttributes extends Required<UserAttributes>{}
@@ -60,19 +48,3 @@ export type NewFriendRequest = Omit<
   "id" | "createdAt" | "status"
 >;
 
-
-export interface PublicationAttributes {
-  id: number,
-  createdBy: string,
-  title: string,
-  message: string,
-  createdAt?: Date,
-  updatedAt?: Date
-}
-
-export type PublicationInputAttributes = Omit<
-  PublicationAttributes,
-  "id" | "createdAt" | "updatedAt"
->;
-
-export type PublicationOutputAttributes = Required<PublicationAttributes>;

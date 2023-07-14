@@ -4,6 +4,8 @@ import MapOfFriends from "./MapOfFriends";
 import PublicationList from "./PublicationList";
 
 const Home = (): JSX.Element => {
+
+  // here ask for using location
   const friends = useAppSelector((state) => state.friends)
   const [selectedFriendId, selectFriend ] = useState(null)
 
@@ -13,9 +15,9 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     friendInitialiser()
   }, [dispatch]);
-  
 
-  console.log(friends)
+  console.log('printing something in home component')
+  
 
   if (!friends) {
     return <div></div>;
