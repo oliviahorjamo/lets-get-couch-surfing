@@ -27,7 +27,7 @@ const updateCoords = async (userId: string, coordinates: Coordinates) => {
   console.log('user id given for service', userId)
   console.log('coordinates given', coordinates)
   try {
-    const response = await axios.put(`${apiBaseUrl}/api/updateCoords/:id`, coordinates)
+    const response = await axios.put(`${apiBaseUrl}/api/users/updateCoords/${userId}`, coordinates)
     return response.data
   } catch (error: unknown) {
     throw new Error(createErrorMessage(error))
