@@ -1,5 +1,5 @@
 // Here all information related to mapping data to types
-import { OtherUserAttributes, PublicationAttributes, UserInputAttributes, UserOutputAttributes, Friend, FriendRequestAttributes } from "../../types";
+import { OtherUserAttributes, PublicationAttributes, UserInputAttributes, UserOutputAttributes, Friend, FriendRequestAttributes, Coordinates } from "../../types";
 import parser from '../parsers';
 
 const toNewUserEntry = (object: unknown): UserInputAttributes => {
@@ -49,6 +49,7 @@ const toUserEntry = (object: unknown): UserOutputAttributes => {
       lat: parser.parseCoordinate(object.lat),
       lon: parser.parseCoordinate(object.lon)
     };
+    console.log('user returned in mapper', userEntry);
     return userEntry;
   }
   throw new Error("Incorrect date returned from db: some fields are missing");
@@ -106,11 +107,9 @@ const toFriendEntry = (object: unknown): Friend => {
   throw new Error("Incorrect date returned from db: some fields are missing");
 };
 
-// this was used when lat and lon were saved as an object
-// however, saving an object to the database doesn't make a lot of sense
-// so I ended up keeping them separately
-/*
-const ToCoordinate = (object: unknown): LatLonCoordinates => {
+
+
+const toCoordinates = (object: unknown): Coordinates => {
   if (!object || typeof object !== "object") {
     throw new Error("Incorrect or missing data for coordinate");
   }
@@ -126,11 +125,12 @@ const ToCoordinate = (object: unknown): LatLonCoordinates => {
   }
   throw new Error("Incorrect coordinates given");
 };
-*/
+
 
 export default {
   toNewUserEntry,
   toUserEntry,
   toOtherUserEntry,
-  toFriendEntry
+  toFriendEntry,
+  toCoordinates
 };

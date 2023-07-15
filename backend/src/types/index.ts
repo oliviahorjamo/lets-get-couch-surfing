@@ -21,14 +21,10 @@ export interface UserAttributes {
 
 export interface OtherUserAttributes extends Pick<UserAttributes, 'id' | 'name' | 'username' | "lat" | "lon">{}
 
-/*
-export type LatLonCoordinates = {
+export interface Coordinates {
   lat: number | null,
   lon: number | null
-};
-
-export type Coordinate = number;
-*/
+}
 
 export interface FriendRequestAttributes {
   id: number;

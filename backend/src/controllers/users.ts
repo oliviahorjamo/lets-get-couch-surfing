@@ -41,3 +41,18 @@ export const getAll: RequestHandler = (_req: Request, res: Response): void => {
       return res.status(500).json(e);
     });
 };
+
+export const updateCoords: RequestHandler = (req: Request, res: Response): void => {
+  const id = parser.parseUuid(req.params.id);
+  const coords = mapper.toCoordinates(req.body);
+  console.log('coord type', typeof coords.lat);
+  userDal
+    .updateCoords(id, coords)
+    .then((record) => {
+      console.log(record);
+      return res.status(201).json(record);
+    })
+    .catch((e: Error) => {
+      return res.status(500).json(e.message);
+    });
+};

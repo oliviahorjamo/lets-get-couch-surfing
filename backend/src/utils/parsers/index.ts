@@ -31,7 +31,9 @@ const isNumber = (number: unknown): number is number => {
 const isCoordinate = (LatOrLon: unknown): LatOrLon is number => {
   const minCoord = -90;
   const maxCoord = 90;
+  console.log(typeof LatOrLon);
   if (isNumber(LatOrLon)) {
+    console.log('coord is number');
     return inRange(LatOrLon, minCoord, maxCoord);
   }
   return false;
@@ -92,6 +94,7 @@ const parseStatus = (status: unknown): Status => {
 
 
 const parseCoordinate = (coordinate: unknown): number | null => {
+  console.log('in parse coordinate', coordinate);
   // This still returns coordinate only as a number and not as null even
   // though also null value should be allowed
   if (coordinate === undefined) {

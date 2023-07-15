@@ -10,6 +10,7 @@ console.log("connecting to", DB_URL);
 const sequelizeConnection = new Sequelize(DB_URL, {
   dialect: dbDriver,
   logging: false,
+  dialectOptions: { decimalNumbers: true }
 });
 
 export default sequelizeConnection;
